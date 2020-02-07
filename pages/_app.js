@@ -30,13 +30,13 @@ function MyApp({ Component, pageProps }) {
 
                     @media screen and (max-width: 600px) {
                         body {
-                            font-size: 12px;
+                            font-size: 16px;
                         }
                     }
 
                     @media screen and (max-width: 420px) {
                         body {
-                            font-size: 10px;
+                            font-size: 16px;
                         }
                     }
                 `}</style>

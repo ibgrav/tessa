@@ -55,7 +55,9 @@ export default () => {
                     #content #title {
                         font-size: 5em;
                         font-weight: 500;
-                        line-height: 1.1em;
+                        line-height: 0.6em;
+                        padding-bottom: 22px;
+                        letter-spacing: 8px;
                         margin: 0;
                     }
 
@@ -97,9 +99,7 @@ export default () => {
                         }
                     }
                 `}</style>
-            <video id="bg-vid" src="/pleasure_720.mp4" type="video/mp4" autoPlay="autoPlay" loop="loop">
-                <poster>poster.png</poster>
-            </video>
+            <video id="bg-vid" src="/pleasure_360.mp4" type="video/mp4" autoPlay loop muted poster="/poster.png" />
             <div id="content">
                 <img id="logo" src="home-logo.png" />
                 <div id="blurb">
