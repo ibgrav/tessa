@@ -1,0 +1,26 @@
+{
+  "name": "tessa",
+  "version": "1.0.0",
+  "description": "tessacrespo.com",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibgrav/tessa.git"
+  },
+  "author": "Isaac Graves",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ibgrav/tessa/issues"
+  },
+  "homepage": "https://github.com/ibgrav/tessa#readme",
+  "dependencies": {
+    "next": "^9.2.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
