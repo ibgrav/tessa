@@ -97,7 +97,9 @@ export default () => {
                         }
                     }
                 `}</style>
-            <video id="bg-vid" src="pleasure_720.mp4" type="video/mp4" autoPlay="autoPlay" loop="loop" poster="poster.png" />
+            <video id="bg-vid" src="/pleasure_720.mp4" type="video/mp4" autoPlay="autoPlay" loop="loop">
+                <poster>poster.png</poster>
+            </video>
             <div id="content">
                 <img id="logo" src="home-logo.png" />
                 <div id="blurb">
