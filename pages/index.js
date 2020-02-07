@@ -1,6 +1,13 @@
+import { useCallback } from 'react';
+
 import Social from '../components/Social';
 
 export default () => {
+    const videoMounted = useCallback((vid) => {
+        console.log({ vid })
+        if (vid) vid.play();
+    });
+
     return (
         <div id="home">
             <style jsx>{`
@@ -99,7 +106,7 @@ export default () => {
                         }
                     }
                 `}</style>
-            <video id="bg-vid" src="/pleasure_360.mp4" type="video/mp4" autoPlay loop muted poster="/poster.png" />
+            <video id="bg-vid" ref={videoMounted} src="/pleasure_360.mp4" type="video/mp4" autoPlay loop muted poster="/poster.png" />
             <div id="content">
                 <img id="logo" src="home-logo.png" />
                 <div id="blurb">
