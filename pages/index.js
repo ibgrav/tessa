@@ -111,7 +111,7 @@ export default () => {
                 <div id="blurb">
                     <h1 id="title">tessa crespo</h1>
                     <div id="subtext">architecture, graphic design, motion graphics, data visualization, film work</div>
-                    <Link href="/story/academic"><a id="launch">story time</a></Link>
+                    <Link href="/story/about"><a id="launch">story time</a></Link>
                 </div>
                 <Social />
             </div>
