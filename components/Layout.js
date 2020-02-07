@@ -93,21 +93,37 @@ export default ({ children }) => {
                 #mobile-tabs {
                     display: none;
                     position: relative;
+                    width: 100%;
                 }
 
                 #mobile-tabs .links {
                     position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    transform: translateX(100%);
-                    transition: transform 1s;
+                    right: 0;
+                    top: -200px;
+                    transition: top 1s, opacity 500ms;
+                    opacity: 0;
                     display: flex;
                     flex-flow: column;
                     align-content: space-between;
+                    z-index: 10;
+                    background-color: ${bg.light};
+                }
+
+                #mobile-tabs .links a {
+                    margin: 5px;
                 }
 
                 #mobile-tabs.open .links {
-                    transform: translateX(-100%);
+                    top: 40px;
+                    opacity: 1;
+                    transition: top 1s, opacity 1s 500ms;
+                }
+
+                #mobile-tabs .open-btn {
+                    position: absolute;
+                    top: 20px;
+                    right: 0;
+                    z-index: 100;
                 }
 
                 #mobile-tabs .open-btn .bar {
