@@ -3,6 +3,6 @@ export default () => ({
         dark: '#333'
     },
     bg: {
-        light: '#fcf9f7'
+        light: '#fef9f7'
     }
 })

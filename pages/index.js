@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
+import Link from 'next/link';
 
 import Social from '../components/Social';
 
 export default () => {
     const videoMounted = useCallback((vid) => {
-        console.log({ vid })
         if (vid) vid.play();
     });
 
@@ -46,7 +46,6 @@ export default () => {
                         padding: 40px;
                         box-sizing: border-box;
                         color: #fff;
-                        animation: zoom-in 1s forwards;
                     }
 
                     #content img {
@@ -112,7 +111,7 @@ export default () => {
                 <div id="blurb">
                     <h1 id="title">tessa crespo</h1>
                     <div id="subtext">architecture, graphic design, motion graphics, data visualization, film work</div>
-                    <a id="launch" href="/story/academic">story time</a>
+                    <Link href="/story/academic"><a id="launch">story time</a></Link>
                 </div>
                 <Social />
             </div>
