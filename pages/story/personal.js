@@ -1,7 +1,14 @@
+import { useState, useEffect } from 'react';
+
 import Link from 'next/link';
 import Layout from '../../components/Layout';
 
 export default () => {
+    const [photosMounted, setPhotosMounted] = useState(false);
+
+    useEffect(() => {
+        if(!photosMounted) setPhotosMounted(true);
+    }, []);
 
     const photos = [
         {
@@ -115,10 +122,14 @@ export default () => {
                     .column {
                         flex: 100%;
                         max-width: 100%;
+                        padding: 0;
+                    }
+                    #photos img {
+                        margin: 10px 0;
                     }
                 }
             `}</style>
-            <PhotoGallery />
+            {photosMounted ? <PhotoGallery /> : null}
         </Layout>
     );
 }

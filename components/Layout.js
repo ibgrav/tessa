@@ -48,6 +48,7 @@ export default ({ children }) => {
                     padding: 20px;
                     margin: 0 auto;
                     box-sizing: border-box;
+                    overflow-x: hidden;
                 }
 
                 #child-container {
@@ -121,7 +122,7 @@ export default ({ children }) => {
 
                 #mobile-tabs .open-btn {
                     position: absolute;
-                    top: 20px;
+                    top: 10px;
                     right: 0;
                     z-index: 100;
                 }
