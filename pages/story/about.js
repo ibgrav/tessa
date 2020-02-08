@@ -24,6 +24,9 @@ export default () => {
                     #about {
                         width: 100%;
                     }
+                    #portrait {
+                        margin-bottom: 10px;
+                    }
                 }
             `}</style>
             <div id="about">

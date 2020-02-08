@@ -127,19 +127,19 @@ export default ({ children }) => {
                 }
 
                 #mobile-tabs .open-btn .bar {
-                    width: 20px;
-                    height: 3px;
-                    margin: 3px;
+                    width: 23px;
+                    height: 2px;
+                    margin: 6px;
                     background: #78b2de;
                     transition: transform 1000ms;
                 }
 
                 #mobile-tabs.open .open-btn .bar:nth-child(1) {
-                    transform: rotate(90deg) translate(3px, 10px);
+                    transform: rotate(90deg) translate(5px,11px);
                 }
 
                 #mobile-tabs.open .open-btn .bar:nth-child(2) {
-                    transform: rotate(-45deg) translate(0px, -3px);
+                    transform: rotate(-45deg) translate(-1px,-2px);
                 }
 
                 #mobile-tabs.open .open-btn .bar:nth-child(3) {
@@ -164,6 +164,10 @@ export default ({ children }) => {
 
                     #mobile-tabs {
                         display: block;
+                    }
+
+                    #header {
+                        margin: 0 auto 40px auto;
                     }
                 }
             `}</style>
