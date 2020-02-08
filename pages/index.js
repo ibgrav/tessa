@@ -105,7 +105,8 @@ export default () => {
                         }
                     }
                 `}</style>
-            <video id="bg-vid" ref={videoMounted} src="/pleasure_360.mp4" type="video/mp4" autoPlay loop muted poster="/poster.png" />
+            <video id="bg-vid" ref={videoMounted} src="/pleasure_360.mp4" type="video/mp4" playsInline autoPlay loop muted poster="/poster.png" />
+            {/* <iframe id="bg-vid" frameBorder="0" allowFullScreen="1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" src="https://www.youtube.com/embed/rBmXYYeLKT0?autohide=1&amp;autoplay=0&amp;controls=0&amp;enablejsapi=1&amp;iv_load_policy=3&amp;loop=0&amp;modestbranding=1&amp;playsinline=1&amp;rel=0&amp;showinfo=0&amp;wmode=opaque&amp;origin=http%3A%2F%2Fwww.tessacrespo.com&amp;widgetid=1"></iframe> */}
             <div id="content">
                 <img id="logo" src="home-logo.png" />
                 <div id="blurb">
