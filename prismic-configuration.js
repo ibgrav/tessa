@@ -1,7 +1,7 @@
 
-import Prismic from 'prismic-javascript'
+import Prismic from 'prismic-javascript';
 
-export const apiEndpoint = 'https://tessa.cdn.prismic.io/api/v2'
+export const apiEndpoint = 'https://tessa.cdn.prismic.io/api/v2';
 export const accessToken = process ? process.env.prismic_access_token : '';
 
 // Client method to query documents from the Prismic repo
@@ -10,8 +10,8 @@ export const Client = (req = null) => (
 )
 
 const createClientOptions = (req = null, prismicAccessToken = null) => {
-  const reqOption = req ? { req } : {}
-  const accessTokenOption = prismicAccessToken ? { accessToken: prismicAccessToken } : {}
+  const reqOption = req ? { req } : {};
+  const accessTokenOption = prismicAccessToken ? { accessToken: prismicAccessToken } : {};
   return {
     ...reqOption,
     ...accessTokenOption,

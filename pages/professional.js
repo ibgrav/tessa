@@ -1,100 +1,158 @@
 import Layout from '../components/Layout';
+import Prismic from 'prismic-javascript';
+import { RichText } from 'prismic-reactjs';
+import { Client, linkResolver } from '../prismic-configuration';
 
-export default () => { 
-    
-    const projects = [
-        {
-            title: 'Arts at King St. Station',
-            subtitle: `
-                <p>multi-disciplinary presentation gallery for the Seattle Office of Arts and Culture</p>
-                <p>design principal_Jerry Garcia</p>
-                <p>role_project architect</p>
-                <p>2019 AIA Seattle Honor Award</p>
-            `,
-            description: `
-                <p>In 2016 the Seattle Office of Arts & Culture (ARTS) commissioned Olson Kundig to create flexible office and gallery spaces on the third floor of hisoric King Street Station. Along with my team we engaged dozens of artists throughout a 6 month particapatory design process to best meet the needs of the local arts community.</p>
-                <p>Working with the fixed column grid of the existing train station, we developed kinetic gallery walls alongside engineer Phil Turner to enable artists to reconfigure the space as needed for exhibitions, performances, and community events. Suspended from a custom designd elevated track in reference to the railroad tracks below, a set of eight movable walls with integrated lighting support a wide range of displays and spatial configurations.</p>
-                <p>The construction of the third floor met rigorous sustainability and historic preservation requirements alike - it is the first City of Seattle funded project to be designed to LEED© v4 Gold certification.</p>
-                `,
-            credit: 'photos by Benjamin Benschneider',
-            titlePhoto: 'king-street/1.jpg',
-            photos: [
-                { src: 'king-street/2.jpg', alt: '' },
-                { src: 'king-street/3.jpg', alt: '' },
-                { src: 'king-street/4.jpg', alt: '' },
-                { src: 'king-street/5.jpg', alt: '' }
-            ]
-        },
-        {
-            title: '520 Pike St',
-            subtitle: `
-                <p>lobby tenant improvement and podium re-clad</p>
-                <p>design principal_Jerry Garcia</p>
-                <p>role_project architect</p>
-            `,
-            description: `
-                <p>520 Pike Street is a 29-story office tower in Seattle's downtown business district which houses oer 1,000 workplace tenants. From 2016-2018 I served as the project architect, alongside principals Kirsten Murray and Jerry Garcia of Olson Kundig, to design and execute a podium re-clad and lobby redesign. After painting the tower a dark charcoal tone to modernize the original 1980 design, we created a light and bright punctuation with the lobby redesign. Using bleached poplar strips for wall cladding and salvaged local timber beams for the desk and benches recalls Pacific Northwest Forests and provides a moment of respite for the tower's tenants.</p>
-            `,
-            titlePhoto: '520-pike/1.png',
-            photos: [
-                { src: '520-pike/2.jpg', alt: '' },
-                { src: '520-pike/3.jpg', alt: '' },
-                { src: '520-pike/4.jpg', alt: '' },
-                { src: '520-pike/5.png', alt: '' },
-                { src: '520-pike/6.jpg', alt: '' },
-                { src: '520-pike/7.jpg', alt: '' }
-            ]
-        },
-        {
-            title: 'Seattle Art Fair',
-            subtitle: `
-                <p>temporary VIP lounge for 2016 Seattle Art Fair</p>
-                <p>role_architectural designer</p>
-            `,
-            description: `
-                <p>Olson Kundig was selected to design the Windermere VIP lounge at the second annual Seattle Art Fair, which took place at CenturyLink Field Event Center from August 4-7, 2016. This was a quick turnaround project in which myself and three others designed and built interactive, adaptable furniture and lighting design in just under 4 weeks. Translucent screens allowed guests a change to gather, reflect, and recharge without feeling entirely separated from the event, while also filtering natural light from the main gallery.</p>
-            `
-        },
-        {
-            title: 'Sawmill Canyon LCA',
-            subtitle: `
-                <p>comparative life cycle assessment of building materials</p>
-                <p>role_building performance analyst and graphic designer</p>
-                <p>(AIA Code Award 2018)</p>
-            `,
-            description: `
-                <p>Sawmill Canyon Retreat was designed by Tom Kundig and completed construction in 2015. In 2017, I worked with Tom and Vikram Sami, our Director of Building Performance, to conduct a post occupant case study and life cycle assessment. These graphics were used for the project's AIA COTE submittal, for which we won the COTE award later that year. This process included assessing the carbon impact of the proposed deisng versus the constructed design materials - comparing the impact of the proposed cast-in-place concrete walls with the CMU walls that were eventually constructed. We found a 38% reduction in impact through conducting a life cycle assessment of each assembly with Tally.com.</p>
-            `
-        },
-        {
-            title: 'Jim Olson Restrospective',
-            subtitle: `
-                <p>graphic design and illustration for Jim Olson's lates book</p>
-                <p>role_artistic director and illustrator</p>
-            `,
-            description: `
-                <p>I recently illustrated site plans for 30 separate Jim olson projects completed over his 50+ year career in collaboration with Evan Harlan, and with help from a number of OK interns. This was an ongoing, iterative process with Jim over a three year period, with the goal of portraying his artistic approach to architecture thorugh watercolor drawings. The book was released in early 2018.</p>
-            `
-        },
-        {
-            title: 'Bay Area Discovery Museum',
-            subtitle: `
-                <p>campus-wide renovation of childrens museum</p>
-                <p>role_exhibit designer</p>
-            `,
-            description: `
-                <p>The Bay Area Discovery Museum, located at the base of the Golden Gate Bridge in Sausalito, CA, is currently undergoing a campus-wide renovation. Working collaboratively with local preservation experts, our team is mainting the architecrual integrity of the hitoric site (originally an army fort) while transforming the visitor experience to meet the needs of BADM's growing visitorship. I served as an exhiibit designer on this project for over a year, working closely with early childhood education experts to develop STEM-based interactive activities and environments that emphasize the importance of imaginative play. I also worked closely with Phil Turner, Olson Kundig's kinetics expert, to design custom playground equipment around the physics concept of six simple machines as a means to use gross motor development as a learning and team building opportunity. Each of the 5 new permanent exhibits and the 2.5 acre outdoor learning environment are meant to build creative problem-solving skills in children to transform the way they learn. Pictured here is a new exhibit called 'How Things Work' that teaches children systems thinking by depicting common household items in sections.</p>
-            `
-        }
-    ]
+import useApp from '../lib/useApp';
+import theme from '../lib/theme';
 
-    const ProjectGallery = (project) => {
+const Professional = ({ projects }) => {
+    const { isDark } = useApp();
+    const { font, bg } = theme(isDark);
 
-    }
+    console.log({ projects });
+
+    const ProjectGallery = ({ project }) => {
+        const { title_image, description, images, credit } = project.data;
+        return (
+            <div className="project-gallery">
+                <style jsx>{`
+                    .project-gallery {
+                        display: flex;
+                        flex-flow: row;
+                        flex-wrap: wrap;
+                        justify-content: space-between;
+                        border-bottom: 1px solid ${font.primary};
+                        padding-top: 40px;
+                    }
+
+                    .project-gallery:nth-child(1) {
+                        padding-top: 0;
+                    }
+
+                    .title-row {
+                        display: flex;
+                        flex-flow: row;
+                        width: 100%;
+                    }
+
+                    .main-container {
+                        width: 40%;
+                        margin: 0 40px 20px 0;
+                        box-sizing: border-box;
+                    }
+
+                    .image-container {
+                        width: calc(50% - 20px);
+                        margin-bottom: 40px;
+                    }
+
+                    .title-row .image-container {
+                        width: 60%;
+                        overflow: hidden;
+                        display: flex;
+                        align-items: flex-start;
+                        justify-content: center;
+                    }
+
+                    .image-container .gallery-photo {
+                        width: 100%;
+                        height: auto;
+                    }
+
+                    .image-container.wide {
+                        width: 100%;
+                    }
+
+                    .title-row .image-container .gallery-photo {
+                        width: auto;
+                        height: 100%;
+                    }
+
+                    .credit {
+                        font-size: 0.8em;
+                    }
+
+                    @media screen and (max-width: 1440px) {
+                        .image-container {
+                            width: calc(50% - 10px);
+                            margin-bottom: 20px;
+                        }
+                    }
+
+                    @media screen and (max-width: 1000px) {
+                        .project-gallery {
+                            padding-top: 25px;
+                        }
+                        .title-row {
+                            flex-flow: column;
+                            margin: 0;
+                        }
+                        .main-container {
+                            width: 80%;
+                            margin: auto;
+                        }
+                        .title-row .image-container {
+                            width: 100%;
+                            margin-top: 20px;
+                        }
+                        .title-row .image-container .gallery-photo {
+                            width: 100%;
+                            height: auto;
+                        }
+                    }
+
+                    @media screen and (max-width: 600px) {
+                        .main-container {
+                            width: 100%;
+                        }
+                        .image-container {
+                            width: 100%;
+                        }
+                        .title-image {
+                            width: 100%;
+                        }
+                    }
+                `}</style>
+                <div className="title-row">
+                    <div className="main-container">
+                        <img className="title-image" src={title_image.url} alt={title_image.alt} />
+                        <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
+                        {credit && <div className="credit">{RichText.render(credit, linkResolver)}</div>}
+                    </div>
+                    <div className="image-container">
+                        <img className="gallery-photo" src={images[0].image.url} alt={images[0].image.alt} />
+                    </div>
+                </div>
+                {images.length && images.map(({ image, wide }, i) => (
+                    i !== 0 ?
+                        <div key={i} className={`image-container ${wide ? 'wide' : ''}`}>
+                            <img className="gallery-photo" src={image.url} alt={image.alt} />
+                        </div>
+                        : null
+                ))}
+            </div>
+        )
+    };
 
     return (
         <Layout>
-            <h1>professional story page</h1>
+            {projects.results.length ? projects.results.map((project, index) => (
+                <ProjectGallery key={index} project={project} />
+            )) : null}
         </Layout>
     );
 }
+
+Professional.getInitialProps = async ctx => {
+    const req = ctx.req;
+    const projects = await Client(req).query(
+        Prismic.Predicates.at('document.type', 'project'),
+        { orderings: '[my.project.order]' }
+    );
+    return {
+        projects
+    }
+}
+
+export default Professional;
