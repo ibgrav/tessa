@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import Link from 'next/link';
 
 import { RichText } from 'prismic-reactjs';
-import { Client, linkResolver } from '../prismic-configuration';
+import { Client, linkResolver } from '../lib/prismic-configuration';
 
 import Social from '../components/Social';
 

@@ -1,7 +1,7 @@
 import Layout from '../components/Layout';
 import Prismic from 'prismic-javascript';
 import { RichText } from 'prismic-reactjs';
-import { Client, linkResolver } from '../prismic-configuration';
+import { Client, linkResolver } from '../lib/prismic-configuration';
 
 import useApp from '../lib/useApp';
 import theme from '../lib/theme';

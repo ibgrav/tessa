@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Client } from '../prismic-configuration';
+import { Client } from '../lib/prismic-configuration';
 
 import Link from 'next/link';
 import Layout from '../components/Layout';
