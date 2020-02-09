@@ -5,7 +5,7 @@ import { Client, linkResolver } from '../prismic-configuration';
 
 import useApp from '../lib/useApp';
 import theme from '../lib/theme';
-import VerticalGallery from '../components/VerticalGallery';
+import ImageGallery from '../components/ImageGallery';
 
 const Professional = ({ projects }) => {
     const { isDark } = useApp();
@@ -154,14 +154,16 @@ const Professional = ({ projects }) => {
                     <VerticalGallery images={images.slice(1, images.length)} numberOfColumns={2}><TitleItem /></VerticalGallery>
                     : <HorizontalGallery images={images}><TitleItem /></HorizontalGallery>
                 } */}
-                {images.length && <VerticalGallery images={images} numberOfColumns={2}>{(title_image || description) && <TitleItem />}</VerticalGallery>}
+                {images && images.length &&
+                    <ImageGallery images={images} numberOfColumns={2}>{(title_image || description) && <TitleItem />}</ImageGallery>
+                }
             </div>
         )
     };
 
     return (
         <Layout>
-            {projects.results.length ? projects.results.map((project, index) => (
+            {projects && projects.results && projects.results.length ? projects.results.map((project, index) => (
                 <ProjectGallery key={index} project={project} />
             )) : null}
         </Layout>

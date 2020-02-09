@@ -3,7 +3,7 @@ import { Client } from '../prismic-configuration';
 
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import VerticalGallery from '../components/VerticalGallery';
+import ImageGallery from '../components/ImageGallery';
 
 const Personal = ({ doc }) => {
     const [state, setState] = useState({
@@ -16,7 +16,7 @@ const Personal = ({ doc }) => {
 
     return (
         <Layout>
-            <VerticalGallery clickable images={doc.data.images} numberOfColumns={3} />
+            <ImageGallery clickable images={doc.data.images} numberOfColumns={3} isVertical />
         </Layout>
     );
 }
