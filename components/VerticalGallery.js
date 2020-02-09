@@ -1,5 +1,5 @@
-const VerticalGallery = ({ images, numberOfColumns, clickable }) => {
-    const oneSection = Math.floor(images.length / numberOfColumns);
+const VerticalGallery = ({ children, images, numberOfColumns, clickable }) => {
+    const oneSection = Math.floor(images.length / numberOfColumns) - (children.length ? 1 : 0);
     const arrs = [];
 
     for (let i = 0; i < numberOfColumns; i++) {
@@ -8,16 +8,15 @@ const VerticalGallery = ({ images, numberOfColumns, clickable }) => {
         else arrs.push(images.slice(oneSection, oneSection * (i + 1)));
     }
 
-    const PhotoColumn = ({ arr }) => (
+    const PhotoColumn = ({ arr, isFirst }) => (
         <div className="column">
+            {isFirst && children && children}
             {arr.map(({ image }, index) => (
                 clickable ? <a key={index} href={image.url}><img className="clickable" src={image.url} alt={image.alt ? image.alt : ''} /></a>
-                : <img key={index} src={image.url} alt={image.alt ? image.alt : ''} />
+                    : <img key={index} src={image.url} alt={image.alt ? image.alt : ''} />
             ))}
         </div>
     )
-
-    console.log({ arrs });
 
     return (
         <div className="photos">
@@ -25,12 +24,12 @@ const VerticalGallery = ({ images, numberOfColumns, clickable }) => {
                 .photos {
                     display: flex;
                     flex-wrap: wrap;
+                    justify-content: space-between;
                 }
 
                 .column {
                     flex: calc(100% / ${numberOfColumns});
-                    max-width: calc(100% / ${numberOfColumns});
-                    padding: 0 15px;
+                    max-width: calc((100% / ${numberOfColumns}) - 15px);
                     box-sizing: border-box;
                 }
 
@@ -57,7 +56,7 @@ const VerticalGallery = ({ images, numberOfColumns, clickable }) => {
                     }
                 }
             `}</style>
-            {arrs.map((arr, i) => <PhotoColumn key={i} arr={arr} />)}
+            {arrs.map((arr, i) => <PhotoColumn key={i} arr={arr} isFirst={i === 0} />)}
         </div>
     )
 }

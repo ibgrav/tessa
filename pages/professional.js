@@ -25,6 +25,15 @@ const Professional = ({ projects }) => {
 
     const ProjectGallery = ({ project }) => {
         const { title_image, description, images, credit, is_vertical } = project.data;
+
+        const TitleItem = () => (
+            <div className="main-container">
+                <img className="title-image" src={title_image.url} alt={title_image.alt} />
+                <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
+                {credit && <div className="credit">{RichText.render(credit, linkResolver)}</div>}
+            </div>
+        )
+
         return (
             <div className="project-gallery">
                 <style global jsx>{`
@@ -53,9 +62,7 @@ const Professional = ({ projects }) => {
                     }
 
                     .main-container {
-                        width: 40%;
-                        margin: 0 40px 20px 0;
-                        box-sizing: border-box;
+                        width: 100%;
                     }
 
                     .image-container {
@@ -82,6 +89,10 @@ const Professional = ({ projects }) => {
                     .title-row .image-container .gallery-photo {
                         width: auto;
                         height: 100%;
+                    }
+
+                    .description {
+                        line-height: 1.3em;
                     }
 
                     .credit {
@@ -139,17 +150,11 @@ const Professional = ({ projects }) => {
                         }
                     }
                 `}</style>
-                <div className="title-row">
-                    <div className="main-container">
-                        <img className="title-image" src={title_image.url} alt={title_image.alt} />
-                        <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
-                        {credit && <div className="credit">{RichText.render(credit, linkResolver)}</div>}
-                    </div>
-                    <div className="image-container" style={{ backgroundImage: `url(${images[0].image.url})` }}>
-                        <img className="mobile-main-img" src={images[0].image.url} alt={images[0].image.alt} />
-                    </div>
-                </div>
-                {images.length && is_vertical ? <VerticalGallery images={images.slice(1, images.length)} numberOfColumns={2} /> : <HorizontalGallery images={images} />}
+                {/* {images.length && is_vertical ?
+                    <VerticalGallery images={images.slice(1, images.length)} numberOfColumns={2}><TitleItem /></VerticalGallery>
+                    : <HorizontalGallery images={images}><TitleItem /></HorizontalGallery>
+                } */}
+                {images.length && <VerticalGallery images={images} numberOfColumns={2}>{(title_image || description) && <TitleItem />}</VerticalGallery>}
             </div>
         )
     };
