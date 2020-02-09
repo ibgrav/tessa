@@ -16,19 +16,19 @@ const Layout = ({ children, meta }) => {
     const tabs = [
         {
             title: 'academic',
-            href: '/story/academic'
+            href: '/academic'
         },
         {
             title: 'professional',
-            href: '/story/professional'
+            href: '/professional'
         },
         {
             title: 'personal',
-            href: '/story/personal'
+            href: '/personal'
         },
         {
             title: 'about',
-            href: '/story/about'
+            href: '/about'
         }
     ]
 
