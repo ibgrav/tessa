@@ -88,6 +88,10 @@ const Professional = ({ projects }) => {
                         font-size: 0.8em;
                     }
 
+                    .mobile-main-img {
+                        display: none;
+                    }
+
                     @media screen and (max-width: 1440px) {
                         .image-container {
                             width: calc(50% - 10px);
@@ -121,11 +125,17 @@ const Professional = ({ projects }) => {
                         .main-container {
                             width: 100%;
                         }
-                        .image-container {
+                        .image-container, .title-row .image-container {
                             width: 100%;
+                            margin: 10px 0;
                         }
                         .title-image {
                             width: 100%;
+                        }
+                        .mobile-main-img {
+                            display: block;
+                            width: 100%;
+                            height: auto;
                         }
                     }
                 `}</style>
@@ -135,7 +145,9 @@ const Professional = ({ projects }) => {
                         <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
                         {credit && <div className="credit">{RichText.render(credit, linkResolver)}</div>}
                     </div>
-                    <div className="image-container" style={{ backgroundImage: `url(${images[0].image.url})` }}></div>
+                    <div className="image-container" style={{ backgroundImage: `url(${images[0].image.url})` }}>
+                        <img className="mobile-main-img" src={images[0].image.url} alt={images[0].image.alt} />
+                    </div>
                 </div>
                 {images.length && is_vertical ? <VerticalGallery images={images.slice(1, images.length)} numberOfColumns={2} /> : <HorizontalGallery images={images} />}
             </div>
