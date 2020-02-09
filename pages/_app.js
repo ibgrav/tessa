@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
                 <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
 
                 <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700&display=swap" rel="stylesheet" />
-                
+
                 <style>{`
                     * {
                         -webkit-font-smoothing: antialiased;
@@ -51,11 +51,11 @@ function MyApp({ Component, pageProps }) {
 // perform automatic static optimization, causing every page in your app to
 // be server-side rendered.
 //
-// MyApp.getInitialProps = async (appContext) => {
-//   // calls page's `getInitialProps` and fills `appProps.pageProps`
-//   const appProps = await App.getInitialProps(appContext);
-//
-//   return { ...appProps }
+// MyApp.getInitialProps = async ctx => {
+//     const req = ctx.req;
+//     const metadata = await Client(req).getSingle('metadata');
+//     console.log({ metadata, ctx })
+//     return { metadata: metadata }
 // }
 
 export default MyApp

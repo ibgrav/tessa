@@ -1,16 +1,21 @@
 import { useCallback } from 'react';
 import Link from 'next/link';
 
+import { RichText } from 'prismic-reactjs';
+import { Client, hrefResolver, linkResolver } from '../prismic-configuration';
+
 import Social from '../components/Social';
 
-export default () => {
+const Home = ({ doc }) => {
     const videoMounted = useCallback((vid) => {
         if (vid) vid.play();
     });
 
+    console.log({ doc, hrefResolver: hrefResolver(doc) })
+
     return (
         <div id="home">
-            <style jsx>{`
+            <style global jsx>{`
                     body {
                         overflow: hidden !important;
                     }
@@ -58,7 +63,7 @@ export default () => {
                         text-align: center;
                     }
 
-                    #content #title {
+                    #content #title h1 {
                         font-size: 5em;
                         font-weight: 500;
                         line-height: 0.6em;
@@ -67,7 +72,7 @@ export default () => {
                         margin: 0;
                     }
 
-                    #content #subtext {
+                    #content #subtext h2 {
                         font-weight: 300;
                         font-size: 1.3em;
                     }
@@ -105,17 +110,27 @@ export default () => {
                         }
                     }
                 `}</style>
-            <video id="bg-vid" ref={videoMounted} src="/pleasure_360.mp4" type="video/mp4" playsInline autoPlay loop muted poster="/poster.png" />
+            <video id="bg-vid" ref={videoMounted} src={doc.data.video.url} type="video/mp4" playsInline autoPlay loop muted /> {/*poster="/poster.png"*/}
             {/* <iframe id="bg-vid" frameBorder="0" allowFullScreen="1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" src="https://www.youtube.com/embed/rBmXYYeLKT0?autohide=1&amp;autoplay=0&amp;controls=0&amp;enablejsapi=1&amp;iv_load_policy=3&amp;loop=0&amp;modestbranding=1&amp;playsinline=1&amp;rel=0&amp;showinfo=0&amp;wmode=opaque&amp;origin=http%3A%2F%2Fwww.tessacrespo.com&amp;widgetid=1"></iframe> */}
             <div id="content">
-                <img id="logo" src="home-logo.png" />
+                <img id="logo" src={doc.data.header.url} alt={doc.data.header.alt ? doc.data.header.alt : "tessa crespo"} />
                 <div id="blurb">
-                    <h1 id="title">tessa crespo</h1>
-                    <div id="subtext">architecture, graphic design, motion graphics, data visualization, film work</div>
-                    <Link href="/story/about"><a id="launch">story time</a></Link>
+                    <div id="title">{doc.data.title ? RichText.render(doc.data.title, linkResolver) : 'tessa crespo'}</div>
+                    <div id="subtext">{doc.data.subtitle ? RichText.render(doc.data.subtitle, linkResolver) : ''}</div>
+                    <Link href={linkResolver(doc.data.button_link)}><a id="launch">{doc.data.button_text ? doc.data.button_text : 'story time'}</a></Link>
                 </div>
                 <Social />
             </div>
         </div>
     )
 }
+
+Home.getInitialProps = async ctx => {
+    const req = ctx.req;
+    const home = await Client(req).getSingle('home');
+    return {
+        doc: home
+    }
+}
+
+export default Home;

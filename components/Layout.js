@@ -5,11 +5,13 @@ import { useRouter } from 'next/router';
 import Social from './Social';
 import theme from './theme';
 
-export default ({ children }) => {
+const Layout = ({ children, meta }) => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const router = useRouter();
     const { font, bg } = theme();
+
+    console.log({ meta });
 
     const tabs = [
         {
@@ -175,9 +177,9 @@ export default ({ children }) => {
 
             <div id="container">
                 <div id="header">
-                    <Link href="/">
-                        <img id="logo" src="../moth.png" />
-                    </Link>
+                    {meta && <Link href="/">
+                        <img id="logo" src={meta.data.nav_logo.url} />
+                    </Link>}
                     <div id="tabs"><TabLinks /></div>
                     <div id="mobile-tabs" className={menuOpen ? 'open' : 'closed'}>
                         <div className="open-btn" onClick={toggleTabs}>
@@ -200,3 +202,5 @@ export default ({ children }) => {
         </div>
     )
 }
+
+export default Layout;
