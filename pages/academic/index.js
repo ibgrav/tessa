@@ -3,12 +3,11 @@ import { Client } from '../../lib/prismic-configuration';
 import Prismic from 'prismic-javascript';
 import Link from 'next/link';
 
-const Academic = ({ items }) => {
-    console.log({ items })
+import useApp from '../../lib/useApp';
 
-    const HoverPanel = (item) => {
-        return null;
-    }
+const Academic = ({ items }) => {
+    const { theme, currentPrimary } = useApp();
+    console.log({ theme, items })
 
     return (
         <Layout>
@@ -33,6 +32,13 @@ const Academic = ({ items }) => {
                     height: 100%;
                     opacity: 0;
                     transition: opacity 500ms;
+                    display: block;
+                    text-decoration: none;
+                    background-color: ${theme.link.active};
+                    color: ${theme.background[currentPrimary]};
+                    text-align: center;
+                    line-height: 45vh;
+                    font-size: 1.6em;
                 }
 
                 .cover:hover {
@@ -42,9 +48,7 @@ const Academic = ({ items }) => {
             <div id="card-container">
                 {items.length && items.map((item, index) => (
                     <div key={index} className="card" style={{ backgroundImage: `url(${item.data.card_image && item.data.card_image.url})` }}>
-                        <div className="cover">
-                            <Link href={`/academic/${item.uid}`}><a>{item.uid}</a></Link>
-                        </div>
+                        <Link href={`/academic/${item.uid}`}><a className="cover"><span className="card-title">{item.uid}</span></a></Link>
                     </div>
                 ))}
             </div>

@@ -11,39 +11,11 @@ import { getCookieValue, setCookie } from '../lib/global';
 
 let initialHeaderHeight = null;
 
-const themeFallback = {
-    text: {
-        primary: '#333',
-        secondary: '#fef9f7'
-    },
-    link: {
-        primary: '#78b2de',
-        active: '#c58c8c'
-    },
-    background: {
-        primary: '#333',
-        secondary: '#FFF'
-    }
-}
 
 const Layout = ({ children }) => {
-    const { meta, setMeta, isDark, toggleDark, eventsSet, setEvents } = useApp();
+    const { theme, meta, setMeta, isDark, toggleDark, eventsSet, setEvents, currentPrimary } = useApp();
     const [menuOpen, setMenuOpen] = useState(false);
     const router = useRouter();
-    const theme = meta ? {
-        text: {
-            primary: meta.data.text_primary,
-            secondary: meta.data.text_secondary
-        },
-        link: {
-            primary: meta.data.link_primary,
-            active: meta.data.link_active
-        },
-        background: {
-            primary: meta.data.background_primary,
-            secondary: meta.data.background_secontary
-        }
-    } : themeFallback;
 
     const triggerStickyHeader = () => {
         if (document.querySelector('#layout') && document.querySelector('#header')) {
@@ -123,8 +95,7 @@ const Layout = ({ children }) => {
         triggerStickyHeader();
     }
 
-    const primaryOrSecondary = meta ? isDark ? 'secondary' : 'primary' : 'secondary';
-    const metaAnimate = meta ? 'background-color 500ms, color 500ms' : '';
+    const metaAnimate = 'background-color 500ms, color 500ms';
 
     return (
         <div id="layout">
@@ -138,8 +109,8 @@ const Layout = ({ children }) => {
 
                     body {
                         margin: 0 auto;
-                        color: ${theme.text[primaryOrSecondary]};
-                        background-color: ${theme.background[primaryOrSecondary]};
+                        color: ${theme.text[currentPrimary]};
+                        background-color: ${theme.background[currentPrimary]};
                         font-size: 16px;
                         transition: ${metaAnimate};
                     }
@@ -182,7 +153,7 @@ const Layout = ({ children }) => {
                     height: 125px;
                     margin: 0px auto;
                     padding: 60px 0;
-                    background-color: ${theme.background[primaryOrSecondary]};
+                    background-color: ${theme.background[currentPrimary]};
                     transition: ${metaAnimate};
                 }
 
@@ -406,7 +377,7 @@ const Layout = ({ children }) => {
                 </div>
 
                 <div id="footer">
-                    <Social color={theme.text[primaryOrSecondary]} />
+                    <Social color={theme.text[currentPrimary]} />
                     <div id="theme-toggle"><span onClick={themeToggle}>{isDark ? '🌕' : '🌑'}</span></div>
                 </div>
             </div>
