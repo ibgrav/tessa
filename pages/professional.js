@@ -5,6 +5,7 @@ import { Client, linkResolver } from '../prismic-configuration';
 
 import useApp from '../lib/useApp';
 import theme from '../lib/theme';
+import VerticalGallery from '../components/VerticalGallery';
 
 const Professional = ({ projects }) => {
     const { isDark } = useApp();
@@ -12,18 +13,28 @@ const Professional = ({ projects }) => {
 
     console.log({ projects });
 
+    const HorizontalGallery = ({ images }) => (
+        images.length && images.map(({ image, wide }, i) => (
+            i !== 0 ?
+                <div key={i} className={`image-container ${wide ? 'wide' : ''}`}>
+                    <img className="gallery-photo" src={image.url} alt={image.alt} />
+                </div>
+                : null
+        ))
+    );
+
     const ProjectGallery = ({ project }) => {
-        const { title_image, description, images, credit } = project.data;
+        const { title_image, description, images, credit, is_vertical } = project.data;
         return (
             <div className="project-gallery">
-                <style jsx>{`
+                <style global jsx>{`
                     .project-gallery {
                         display: flex;
                         flex-flow: row;
                         flex-wrap: wrap;
                         justify-content: space-between;
                         border-bottom: 1px solid ${font.primary};
-                        padding-top: 40px;
+                        padding: 40px 0 20px 0;
                     }
 
                     .project-gallery:nth-child(1) {
@@ -34,6 +45,11 @@ const Professional = ({ projects }) => {
                         display: flex;
                         flex-flow: row;
                         width: 100%;
+                    }
+
+                    .title-image {
+                        width: 100%;
+                        height: auto;
                     }
 
                     .main-container {
@@ -49,10 +65,9 @@ const Professional = ({ projects }) => {
 
                     .title-row .image-container {
                         width: 60%;
-                        overflow: hidden;
-                        display: flex;
-                        align-items: flex-start;
-                        justify-content: center;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: cover;
                     }
 
                     .image-container .gallery-photo {
@@ -93,11 +108,11 @@ const Professional = ({ projects }) => {
                             margin: auto;
                         }
                         .title-row .image-container {
-                            width: 100%;
+                            width: 80%;
                             margin-top: 20px;
                         }
                         .title-row .image-container .gallery-photo {
-                            width: 100%;
+                            width: 80%;
                             height: auto;
                         }
                     }
@@ -120,17 +135,9 @@ const Professional = ({ projects }) => {
                         <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
                         {credit && <div className="credit">{RichText.render(credit, linkResolver)}</div>}
                     </div>
-                    <div className="image-container">
-                        <img className="gallery-photo" src={images[0].image.url} alt={images[0].image.alt} />
-                    </div>
+                    <div className="image-container" style={{ backgroundImage: `url(${images[0].image.url})` }}></div>
                 </div>
-                {images.length && images.map(({ image, wide }, i) => (
-                    i !== 0 ?
-                        <div key={i} className={`image-container ${wide ? 'wide' : ''}`}>
-                            <img className="gallery-photo" src={image.url} alt={image.alt} />
-                        </div>
-                        : null
-                ))}
+                {images.length && is_vertical ? <VerticalGallery images={images.slice(1, images.length)} numberOfColumns={2} /> : <HorizontalGallery images={images} />}
             </div>
         )
     };
