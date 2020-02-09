@@ -22,6 +22,7 @@ export default ({ color }) => {
                     width: 100%;
                     height: 100%;
                     border-radius: 50%;
+                    transition: fill 500ms;
                 }
             `}</style>
             <a href="mailto:tcrespo@gsd.harvard.edu">

@@ -2,11 +2,11 @@ import Layout from '../components/Layout';
 import { RichText } from 'prismic-reactjs';
 import { Client, hrefResolver, linkResolver } from '../prismic-configuration';
 
-const About = ({ doc, meta }) => {
+const About = ({ doc }) => {
     console.log({ doc });
 
     return (
-        <Layout meta={meta}>
+        <Layout>
             <style jsx>{`
                 #about {
                     width: 700px;
@@ -44,8 +44,7 @@ const About = ({ doc, meta }) => {
 About.getInitialProps = async ctx => {
     const req = ctx.req;
     const doc = await Client(req).getSingle('about');
-    const meta = await Client(req).getSingle('metadata');
-    return { doc, meta }
+    return { doc }
 }
 
 export default About;
