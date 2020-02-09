@@ -11,8 +11,6 @@ const Professional = ({ projects }) => {
     const { isDark } = useApp();
     const { font, bg } = theme(isDark);
 
-    console.log({ projects });
-
     const HorizontalGallery = ({ images }) => (
         images.length && images.map(({ image, wide }, i) => (
             i !== 0 ?
@@ -35,7 +33,7 @@ const Professional = ({ projects }) => {
         )
 
         return (
-            <div className="project-gallery">
+            <div className="project-gallery" id={project.uid}>
                 <style global jsx>{`
                     .project-gallery {
                         display: flex;
@@ -103,6 +101,28 @@ const Professional = ({ projects }) => {
                         display: none;
                     }
 
+                    #project-list {
+                        display: flex;
+                        flex-flow: row;
+                        justify-content: space-between;
+                        flex-wrap: wrap;
+                        margin-bottom: 40px;
+                    }
+
+                    #project-list a {
+                        color: ${font.link};
+                        text-decoration: none;
+                        padding: 0 5px;
+                    }
+
+                    #project-list p {
+                        margin: 5px 0;
+                    }
+
+                    #project-list a.active, #project-list a:hover {
+                        color: ${font.active};
+                    }
+
                     @media screen and (max-width: 1440px) {
                         .image-container {
                             width: calc(50% - 10px);
@@ -150,21 +170,28 @@ const Professional = ({ projects }) => {
                         }
                     }
                 `}</style>
-                {/* {images.length && is_vertical ?
-                    <VerticalGallery images={images.slice(1, images.length)} numberOfColumns={2}><TitleItem /></VerticalGallery>
-                    : <HorizontalGallery images={images}><TitleItem /></HorizontalGallery>
-                } */}
                 {images && images.length &&
-                    <ImageGallery images={images} numberOfColumns={2}>{(title_image || description) && <TitleItem />}</ImageGallery>
+                    <ImageGallery images={images} numberOfColumns={2} isVertical={is_vertical}>{(title_image || description) && <TitleItem />}</ImageGallery>
                 }
             </div>
         )
     };
 
+    const ProjectList = () => (
+        projects && projects.results && projects.results.length ?
+            <div id="project-list">
+                {projects.results.map((project, index) => (
+                    <a key={index} href={`#${project.uid}`}> {RichText.render(project.data.title)} </a>
+                ))}
+            </div>
+            : null
+    )
+
     return (
         <Layout>
+            <ProjectList />
             {projects && projects.results && projects.results.length ? projects.results.map((project, index) => (
-                <ProjectGallery key={index} project={project} />
+                <ProjectGallery project={project} key={index} />
             )) : null}
         </Layout>
     );

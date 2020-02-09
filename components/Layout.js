@@ -7,12 +7,62 @@ import { Client } from '../lib/prismic-configuration';
 import useApp from '../lib/useApp';
 
 import Social from './Social';
-import theme from '../lib/theme';
-import { getCookieValue, setCookie, deleteCookie } from '../lib/global';
+import { getCookieValue, setCookie } from '../lib/global';
+
+let initialHeaderHeight = null;
+
+const themeFallback = {
+    text: {
+        primary: '#333',
+        secondary: '#fef9f7'
+    },
+    link: {
+        primary: '#78b2de',
+        active: '#c58c8c'
+    },
+    background: {
+        primary: '#333',
+        secondary: '#FFF'
+    }
+}
 
 const Layout = ({ children }) => {
-    const { meta, setMeta, isDark, toggleDark } = useApp();
+    const { meta, setMeta, isDark, toggleDark, eventsSet, setEvents } = useApp();
     const [menuOpen, setMenuOpen] = useState(false);
+    const router = useRouter();
+    const theme = meta ? {
+        text: {
+            primary: meta.data.text_primary,
+            secondary: meta.data.text_secondary
+        },
+        link: {
+            primary: meta.data.link_primary,
+            active: meta.data.link_active
+        },
+        background: {
+            primary: meta.data.background_primary,
+            secondary: meta.data.background_secontary
+        }
+    } : themeFallback;
+
+    const triggerStickyHeader = () => {
+        if (document.querySelector('#layout') && document.querySelector('#header')) {
+            const scroll = window.pageYOffset;
+            const layout = document.querySelector('#layout');
+            const hasSticky = layout.classList.contains('sticky');
+            const menu = document.querySelector('#mobile-tabs');
+
+            if (!initialHeaderHeight) initialHeaderHeight = document.querySelector('#header').offsetHeight;
+
+            if (scroll > initialHeaderHeight && !hasSticky) {
+                layout.classList.add('sticky');
+                menu.classList.remove('open');
+            } else if (scroll < (initialHeaderHeight - 50) && hasSticky) {
+                layout.classList.remove('sticky');
+                menu.classList.remove('open');
+            }
+        }
+    }
 
     useEffect(() => {
         const setMetaData = async () => {
@@ -26,12 +76,17 @@ const Layout = ({ children }) => {
             if (isDarkCookie === 'true') toggleDark(true);
         }
 
+        const setScrollListener = () => {
+            console.log('adding scroll event listener for sticky header');
+            window.addEventListener('scroll', triggerStickyHeader);
+            triggerStickyHeader();
+            setEvents();
+        }
+
         if (!meta) setMetaData();
         checkTheme();
+        if (!eventsSet && document.querySelector('#layout') && document.querySelector('#header')) setScrollListener();
     }, []);
-
-    const router = useRouter();
-    const { font, bg } = theme(isDark);
 
     const tabs = [
         {
@@ -54,7 +109,7 @@ const Layout = ({ children }) => {
 
     const TabLinks = () => (
         tabs.map((tab, i) => (
-            <Link key={i} href={tab.href}><a className={router.pathname === tab.href ? 'active' : ''}>{tab.title}</a></Link>
+            <Link key={i} href={tab.href}><a className={router.pathname.indexOf(tab.href) > -1 ? 'active' : ''}>{tab.title}</a></Link>
         ))
     );
 
@@ -65,7 +120,11 @@ const Layout = ({ children }) => {
     const themeToggle = () => {
         const isDarkToggled = toggleDark();
         setCookie('isDarkTheme', isDarkToggled);
+        triggerStickyHeader();
     }
+
+    const primaryOrSecondary = meta ? isDark ? 'secondary' : 'primary' : 'secondary';
+    const metaAnimate = meta ? 'background-color 500ms, color 500ms' : '';
 
     return (
         <div id="layout">
@@ -79,10 +138,10 @@ const Layout = ({ children }) => {
 
                     body {
                         margin: 0 auto;
-                        color: ${font.primary};
-                        background-color: ${bg.primary};
+                        color: ${theme.text[primaryOrSecondary]};
+                        background-color: ${theme.background[primaryOrSecondary]};
                         font-size: 16px;
-                        transition: background-color 500ms, color 500ms;
+                        transition: ${metaAnimate};
                     }
 
                     @media screen and (max-width: 600px) {
@@ -99,12 +158,17 @@ const Layout = ({ children }) => {
                 `}</style>
             </Head>
             <style global jsx>{`
-                #container {
+                #container, #header-container {
                     width: 1400px;
-                    padding: 20px;
                     margin: 0 auto;
                     box-sizing: border-box;
                     overflow-x: hidden;
+                    padding: 0px 20px;
+                }
+
+                #container {
+                    position: relative;
+                    padding: 245px 20px 0 20px;
                 }
 
                 #child-container {
@@ -112,16 +176,28 @@ const Layout = ({ children }) => {
                 }
 
                 #header {
+                    position: absolute;
+                    top: 0;
+                    width: calc(100% - 40px);
                     height: 125px;
-                    margin: 60px auto;
+                    margin: 0px auto;
+                    padding: 60px 0;
+                    background-color: ${theme.background[primaryOrSecondary]};
+                    transition: ${metaAnimate};
+                }
+
+                #header-container {
                     display: flex;
                     flex-flow: row;
                     justify-content: space-between;
+                    height: 100%;
+                    overflow: hidden;
                 }
 
                 #logo {
                     height: 100%;
                     width: auto;
+                    z-index: 100;
                 }
 
                 #logo:hover {
@@ -140,12 +216,12 @@ const Layout = ({ children }) => {
                 #tabs a, #mobile-tabs a {
                     margin: 0 10px;
                     text-decoration: none;
-                    color: #78b2de;
+                    color: ${theme.link.primary};
                     letter-spacing: 2px;
                 }
 
-                #tabs .active, #tabs a:hover, #mobile-tabs .active {
-                    color: #c58c8c;
+                #tabs .active, #tabs a:hover, #mobile-tabs .active, #mobile-tabs a:hover {
+                    color: ${theme.link.active};
                 }
 
                 #footer {
@@ -153,22 +229,38 @@ const Layout = ({ children }) => {
                 }
 
                 #mobile-tabs {
+                    position: absolute;
                     display: none;
-                    position: relative;
+                    right: 0px;
+                    top: 10px;
                     width: 100%;
                 }
 
                 #mobile-tabs .links {
                     position: absolute;
-                    right: 0;
+                    right: 10px;
                     top: -200px;
-                    transition: top 500ms, opacity 500ms, background-color 500ms, color 500ms;
+                    transition: top 500ms, opacity 500ms, ${metaAnimate};
                     opacity: 0;
                     display: flex;
                     flex-flow: column;
+                    text-align: right;
                     align-content: space-between;
                     z-index: 10;
-                    background-color: ${bg.primary};
+                }
+
+                #layout.sticky #mobile-tabs .links {
+                    transition: top 500ms, ${metaAnimate};
+                }
+
+                #layout.sticky #mobile-tabs.open .links {
+                    top: 45px;
+                    transition: top 1s, ${metaAnimate};
+                }
+
+                #layout.sticky #mobile-tabs .open-btn {
+                    top: 0;
+                    right: 14px;
                 }
 
                 #mobile-tabs .links a {
@@ -178,7 +270,7 @@ const Layout = ({ children }) => {
                 #mobile-tabs.open .links {
                     top: 40px;
                     opacity: 1;
-                    transition: top 1s, opacity 1s 500ms, background-color 500ms, color 500ms;
+                    transition: top 1s, opacity 1s 500ms, ${metaAnimate};
                 }
 
                 #mobile-tabs .open-btn {
@@ -193,7 +285,7 @@ const Layout = ({ children }) => {
                     height: 2px;
                     margin: 6px;
                     background: #78b2de;
-                    transition: transform 1000ms, background-color 500ms, color 500ms;
+                    transition: transform 1000ms, ${metaAnimate};
                 }
 
                 #mobile-tabs.open .open-btn .bar:nth-child(1) {
@@ -212,15 +304,45 @@ const Layout = ({ children }) => {
                     text-align: center;
                     margin: 80px 0;
                 }
+                #theme-toggle span:hover {
+                    cursor: pointer;
+                }
+
+                #layout.sticky #header {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    padding: 0 20px;
+                    width: 100%;
+                    box-sizing: border-box;
+                    z-index: 100;
+                    height: 50px;
+                    margin: 0 auto;
+                    transform: translateY(-50px);
+                    animation: slide-down 500ms 1s forwards;
+                    box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.3);
+                }
+
+                #layout.sticky #tabs {
+                    line-height: 50px;
+                }
 
                 @keyframes fade-in {
                     from {opacity: 0}
                     to {opacity: 1}
                 }
 
+                @keyframes slide-down {
+                    from {transform: translateY(-50px)}
+                    to {transform: translateY(0)}
+                }
+
                 @media screen and (max-width: 1440px) {
-                    #container {
+                    #container, #header-container {
                         width: 100%;
+                    }
+                    #layout.sticky #header-container {
+                        padding: 0;
                     }
                 }
 
@@ -233,26 +355,48 @@ const Layout = ({ children }) => {
                         display: block;
                     }
 
+                    #logo {
+                        margin-top: 10px;
+                    }
+
+                    #layout.sticky #logo {
+                        margin-top: 0;
+                    }
+
                     #header {
-                        margin: 0 auto 40px auto;
+                        padding: 0 0 30px 0;
+                    }
+
+                    #container {
+                        padding-top: 155px;
+                    }
+
+                    #header-container {
+                        padding: 0;
+                    }
+
+                    #project-list {
+                        margin-bottom: 10px !important;
                     }
                 }
             `}</style>
 
             <div id="container">
                 <div id="header">
-                    {meta && meta.data ? <Link href="/">
-                        <img id="logo" src={meta.data.nav_logo.url} />
-                    </Link> : <div className="logo-placeholder"></div>}
-                    <div id="tabs"><TabLinks /></div>
-                    <div id="mobile-tabs" className={menuOpen ? 'open' : 'closed'}>
-                        <div className="open-btn" onClick={toggleTabs}>
-                            <div className="bar"></div>
-                            <div className="bar"></div>
-                            <div className="bar"></div>
-                        </div>
-                        <div className="links">
-                            <TabLinks />
+                    <div id="header-container">
+                        {meta && meta.data ? <Link href="/">
+                            <img id="logo" src={meta.data.nav_logo.url} />
+                        </Link> : <div className="logo-placeholder"></div>}
+                        <div id="tabs"><TabLinks /></div>
+                        <div id="mobile-tabs" className={menuOpen ? 'open' : 'closed'}>
+                            <div className="open-btn" onClick={toggleTabs}>
+                                <div className="bar"></div>
+                                <div className="bar"></div>
+                                <div className="bar"></div>
+                            </div>
+                            <div className="links">
+                                <TabLinks />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -262,8 +406,8 @@ const Layout = ({ children }) => {
                 </div>
 
                 <div id="footer">
-                    <Social color={font.primary} />
-                    <div id="theme-toggle" onClick={themeToggle}>{isDark ? '🌕' : '🌑'}</div>
+                    <Social color={theme.text[primaryOrSecondary]} />
+                    <div id="theme-toggle"><span onClick={themeToggle}>{isDark ? '🌕' : '🌑'}</span></div>
                 </div>
             </div>
         </div>

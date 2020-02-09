@@ -2,6 +2,8 @@ const ImageGallery = ({ children, images, numberOfColumns, clickable, isVertical
     const oneSection = images && Math.floor(images.length / numberOfColumns) - (children && children.length ? 1 : 0) || 0;
     const imageArrays = [];
 
+    console.log({images, isVertical})
+
     if (isVertical) {
         for (let i = 0; i < numberOfColumns; i++) {
             if (i === 0) imageArrays.push(images.slice(0, oneSection));
@@ -19,6 +21,8 @@ const ImageGallery = ({ children, images, numberOfColumns, clickable, isVertical
             else imageSet.push(image);
         });
     }
+
+    console.log({ imageArrays })
 
     const VerticalColumn = ({ arr, isFirst }) => (
         <div className="column">
@@ -78,10 +82,10 @@ const ImageGallery = ({ children, images, numberOfColumns, clickable, isVertical
                     }
                 }
             `}</style>
-            {imageArrays.map((arr, i) => {
+            {imageArrays.map((arr, i) => (
                 isVertical ? <VerticalColumn key={i} arr={arr} isFirst={i === 0} />
                     : <HorizontalColumn key={i} arr={arr} isFirst={i === 0} />
-            })}
+            ))}
         </div>
     )
 }

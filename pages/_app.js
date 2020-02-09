@@ -1,11 +1,7 @@
 import Head from 'next/head';
-import theme from '../lib/theme';
-
-import {AppProvider} from '../lib/AppContext';
+import { AppProvider } from '../lib/AppContext';
 
 function MyApp({ Component, pageProps }) {
-    const { font, bg } = theme();
-
     return (
         <>
             <Head>
@@ -27,10 +23,9 @@ function MyApp({ Component, pageProps }) {
 
                     body {
                         margin: 0 auto;
-                        color: ${font.primary};
-                        background-color: ${bg.primary};
+                        color: #333;
+                        background-color: #fff;
                         font-size: 16px;
-                        
                     }
 
                     @media screen and (max-width: 600px) {

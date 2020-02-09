@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Client } from '../lib/prismic-configuration';
 
-import Link from 'next/link';
 import Layout from '../components/Layout';
 import ImageGallery from '../components/ImageGallery';
 
