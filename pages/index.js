@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import Link from 'next/link';
 
 import { RichText } from 'prismic-reactjs';
-import { Client, hrefResolver, linkResolver } from '../prismic-configuration';
+import { Client, linkResolver } from '../prismic-configuration';
 
 import Social from '../components/Social';
 
@@ -11,7 +11,7 @@ const Home = ({ doc }) => {
         if (vid) vid.play();
     });
 
-    console.log({ doc, hrefResolver: hrefResolver(doc) })
+    console.log({ doc, linkResolver: linkResolver(doc) })
 
     return (
         <div id="home">

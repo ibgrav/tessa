@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
 import { RichText } from 'prismic-reactjs';
-import { Client, hrefResolver, linkResolver } from '../prismic-configuration';
+import { Client, linkResolver } from '../prismic-configuration';
 
 const About = ({ doc }) => {
     console.log({ doc });
