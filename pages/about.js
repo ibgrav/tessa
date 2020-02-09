@@ -29,7 +29,7 @@ const About = ({ doc }) => {
                         width: 100%;
                     }
                     #portrait {
-                        margin-bottom: 10px;
+                        margin-bottom: 20px;
                     }
                 }
             `}</style>

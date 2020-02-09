@@ -8,6 +8,7 @@ import useApp from '../lib/useApp';
 
 import Social from './Social';
 import theme from '../lib/theme';
+import { getCookieValue, setCookie, deleteCookie } from '../lib/global';
 
 const Layout = ({ children }) => {
     const { meta, setMeta, isDark, toggleDark } = useApp();
@@ -20,7 +21,13 @@ const Layout = ({ children }) => {
             setMeta(metadata);
         }
 
+        const checkTheme = () => {
+            const isDarkCookie = getCookieValue('isDarkTheme');
+            if (isDarkCookie === 'true') toggleDark(true);
+        }
+
         if (!meta) setMetaData();
+        checkTheme();
     }, []);
 
     const router = useRouter();
@@ -56,7 +63,8 @@ const Layout = ({ children }) => {
     }
 
     const themeToggle = () => {
-        toggleDark();
+        const isDarkToggled = toggleDark();
+        setCookie('isDarkTheme', isDarkToggled);
     }
 
     return (
@@ -141,7 +149,7 @@ const Layout = ({ children }) => {
                 }
 
                 #footer {
-                    margin: 140px auto 80px auto;
+                    margin: 140px auto 60px auto;
                 }
 
                 #mobile-tabs {
@@ -154,7 +162,7 @@ const Layout = ({ children }) => {
                     position: absolute;
                     right: 0;
                     top: -200px;
-                    transition: top 1s, opacity 500ms, background-color 500ms, color 500ms;
+                    transition: top 500ms, opacity 500ms, background-color 500ms, color 500ms;
                     opacity: 0;
                     display: flex;
                     flex-flow: column;
@@ -202,6 +210,7 @@ const Layout = ({ children }) => {
 
                 #theme-toggle {
                     text-align: center;
+                    margin: 80px 0;
                 }
 
                 @keyframes fade-in {
@@ -252,8 +261,10 @@ const Layout = ({ children }) => {
                     {children}
                 </div>
 
-                <div id="footer"><Social color={font.primary} /></div>
-                <div id="theme-toggle" onClick={themeToggle}>{isDark ? '🌕' : '🌑'}</div>
+                <div id="footer">
+                    <Social color={font.primary} />
+                    <div id="theme-toggle" onClick={themeToggle}>{isDark ? '🌕' : '🌑'}</div>
+                </div>
             </div>
         </div>
     )

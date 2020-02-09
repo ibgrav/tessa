@@ -1,75 +1,28 @@
 import { useState, useEffect } from 'react';
+import { Client } from '../prismic-configuration';
 
 import Link from 'next/link';
 import Layout from '../components/Layout';
 
-export default () => {
-    const [photosMounted, setPhotosMounted] = useState(false);
+const Personal = ({ doc }) => {
+    const [state, setState] = useState({
+        photosMounted: false
+    });
 
     useEffect(() => {
-        if(!photosMounted) setPhotosMounted(true);
+        if (!state.photosMounted) setState(state => ({ ...state, photosMounted: true }));
     }, []);
-
-    const photos = [
-        {
-            src: '1.jpg'
-        },
-        {
-            src: '2.jpg'
-        },
-        {
-            src: '3.jpg'
-        },
-        {
-            src: '4.jpg'
-        },
-        {
-            src: '5.jpg'
-        },
-        {
-            src: '6.jpg'
-        },
-        {
-            src: '7.jpg'
-        },
-        {
-            src: '8.jpg'
-        },
-        {
-            src: '9.jpg'
-        },
-        {
-            src: '10.jpg'
-        },
-        {
-            src: '11.jpg'
-        },
-        {
-            src: '12.jpg'
-        },
-        {
-            src: '13.jpg'
-        },
-        {
-            src: '14.jpg'
-        },
-        {
-            src: '15.jpg'
-        },
-        {
-            src: '16.jpg'
-        }
-    ];
 
     const PhotoColumn = ({ arr }) => (
         <div className="column">
-            {arr.map((photo, index) => (
-                <Link key={index} href={`../personal/${photo.src}`}><img src={`../personal/${photo.src}`} alt={photos.alt ? photos.alt : ''} /></Link>
+            {arr.map(({ image }, index) => (
+                <a key={index} href={image.url}><img src={image.url} alt={image.alt ? image.alt : ''} /></a>
             ))}
         </div>
     )
 
     const PhotoGallery = () => {
+        const photos = doc.data.images;
         const oneThird = Math.floor(photos.length / 3);
         const first = photos.slice(0, oneThird);
         const second = photos.slice(oneThird, oneThird * 2);
@@ -113,13 +66,6 @@ export default () => {
 
                 @media screen and (max-width: 800px) {
                     .column {
-                        flex: 50%;
-                        max-width: 50%;
-                    }
-                }
-
-                @media screen and (max-width: 600px) {
-                    .column {
                         flex: 100%;
                         max-width: 100%;
                         padding: 0;
@@ -129,7 +75,16 @@ export default () => {
                     }
                 }
             `}</style>
-            {photosMounted ? <PhotoGallery /> : null}
+            <PhotoGallery />
         </Layout>
     );
 }
+
+
+Personal.getInitialProps = async ctx => {
+    const req = ctx.req;
+    const doc = await Client(req).getSingle('personal');
+    return { doc }
+}
+
+export default Personal;
