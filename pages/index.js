@@ -8,7 +8,12 @@ import Social from '../components/Social';
 
 const Home = ({ doc }) => {
     const videoMounted = useCallback((vid) => {
-        if (vid) vid.play();
+        if (vid) {
+            const src = vid.dataset.src;
+            console.log({ vid, src })
+            vid.src = src;
+            vid.play();
+        }
     });
 
     console.log({ doc, linkResolver: linkResolver(doc) })
@@ -33,9 +38,8 @@ const Home = ({ doc }) => {
                     top: 50%;
                     transform: translate(-50%, -50%);
                     z-index: 1;
-                    min-height: 100vh;
-                    min-width: 100vw;
-                    margin-top: -1px;
+                    min-height: 101vh;
+                    min-width: 101vw;
                 }
 
                 #content {
@@ -70,11 +74,13 @@ const Home = ({ doc }) => {
                     padding-bottom: 22px;
                     letter-spacing: 8px;
                     margin: 0;
+                    user-select: none;
                 }
 
                 #content #subtext h2 {
                     font-weight: 300;
                     font-size: 1.3em;
+                    user-select: none;
                 }
 
                 #content #launch {
@@ -85,6 +91,14 @@ const Home = ({ doc }) => {
                     color: white;
                     text-decoration: none;
                     display: inline-block;
+                    user-select: none;
+                }
+
+                #video-cover {
+                    z-index: 10;
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
                 }
 
                 @keyframes fade-in {
@@ -110,7 +124,19 @@ const Home = ({ doc }) => {
                     }
                 }
             `}</style>
-            <video id="bg-vid" ref={videoMounted} src={doc.data.video.url} type="video/mp4" poster={doc.data.video_poster.url} playsInline autoPlay loop muted />
+            <video id="bg-vid" ref={videoMounted} data-src={doc.data.video.url} type="video/mp4" poster={doc.data.video_poster.url} playsInline autoPlay loop muted />
+            {/* <div id="video-ratio">
+                <iframe
+                    id="bg-vid"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; encrypted-media;"
+                    title="YouTube video player"
+                    width="100%"
+                    height="100%"
+                    src="https://youtube.com/embed/rBmXYYeLKT0?autoplay=1&controls=0&showinfo=0&autohide=1&background=1&mute=1&loop=1"
+                ></iframe>
+            </div> */}
+            <div id="video-cover"></div>
             <div id="content">
                 <img id="logo" src={doc.data.header.url} alt={doc.data.header.alt ? doc.data.header.alt : "tessa crespo"} />
                 <div id="blurb">
