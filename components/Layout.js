@@ -209,9 +209,9 @@ const Layout = ({ children }) => {
 
                 #mobile-tabs .links {
                     position: absolute;
-                    right: 10px;
+                    right: 33px;
                     top: -200px;
-                    transition: top 500ms, opacity 500ms, ${metaAnimate};
+                    transition: top 500ms, ${metaAnimate};
                     opacity: 0;
                     display: flex;
                     flex-flow: column;
@@ -221,11 +221,20 @@ const Layout = ({ children }) => {
                 }
 
                 #layout.sticky #mobile-tabs .links {
+                    flex-flow: row;
+                    width: 100%;
+                    background: ${theme.background[currentPrimary]};
+                    left: 0;
+                    flex-wrap: wrap;
+                    padding: 5px;
+                    box-sizing: border-box;
+                    justify-content: space-around;
                     transition: top 500ms, ${metaAnimate};
+                    box-shadow: 0px 5px 10px -10px rgba(0,0,0,0.3);
                 }
 
                 #layout.sticky #mobile-tabs.open .links {
-                    top: 45px;
+                    top: 40px;
                     transition: top 1s, ${metaAnimate};
                 }
 
@@ -234,12 +243,16 @@ const Layout = ({ children }) => {
                     right: 14px;
                 }
 
+                #layout.sticky #mobile-tabs .links a {
+                    margin: 0px;
+                }
+
                 #mobile-tabs .links a {
                     margin: 5px;
                 }
 
                 #mobile-tabs.open .links {
-                    top: 40px;
+                    top: 10px;
                     opacity: 1;
                     transition: top 1s, opacity 1s 500ms, ${metaAnimate};
                 }

@@ -44,6 +44,12 @@ const Academic = ({ items }) => {
                 .cover:hover {
                     opacity: 1;
                 }
+
+                @media screen and (max-width: 600px) {
+                    .card {
+                        width: 100%;
+                    }
+                }
             `}</style>
             <div id="card-container">
                 {items.length && items.map((item, index) => (

@@ -4,12 +4,10 @@ import { RichText } from 'prismic-reactjs';
 import { Client, linkResolver } from '../lib/prismic-configuration';
 
 import useApp from '../lib/useApp';
-import theme from '../lib/theme';
 import ImageGallery from '../components/ImageGallery';
 
 const Professional = ({ projects }) => {
-    const { isDark } = useApp();
-    const { font, bg } = theme(isDark);
+    const { isDark, theme, currentPrimary } = useApp();
 
     const HorizontalGallery = ({ images }) => (
         images.length && images.map(({ image, wide }, i) => (
@@ -22,11 +20,16 @@ const Professional = ({ projects }) => {
     );
 
     const ProjectGallery = ({ project }) => {
-        const { title_image, description, images, credit, is_vertical } = project.data;
+        const { title_image, description, images, credit, is_vertical, subtitle, subtitle_color } = project.data;
+
+        console.log({ title_image, description, images, credit, is_vertical, subtitle, subtitle_color })
 
         const TitleItem = () => (
             <div className="main-container">
-                <img className="title-image" src={title_image.url} alt={title_image.alt} />
+                <div className="title-box">
+                    <img className="title-image" src={title_image.url} alt={title_image.alt} />
+                    <div className="subtitle" style={{color: subtitle_color ? subtitle_color : 'inherit'}}>{subtitle ? RichText.render(subtitle, linkResolver) : ''}</div>
+                </div>
                 <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
                 {credit && <div className="credit">{RichText.render(credit, linkResolver)}</div>}
             </div>
@@ -40,8 +43,8 @@ const Professional = ({ projects }) => {
                         flex-flow: row;
                         flex-wrap: wrap;
                         justify-content: space-between;
-                        border-bottom: 1px solid ${font.primary};
-                        padding: 40px 0 20px 0;
+                        border-bottom: 1px solid ${theme.text[currentPrimary]};
+                        padding: 20px 0 20px 0;
                     }
 
                     .project-gallery:nth-child(1) {
@@ -52,6 +55,26 @@ const Professional = ({ projects }) => {
                         display: flex;
                         flex-flow: row;
                         width: 100%;
+                    }
+
+                    .title-box {
+                        position: relative;
+                    }
+
+                    .subtitle {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        text-align: right;
+                        box-sizing: border-box;
+                        padding: 10px 10px 20px 10px;
+                        font-size: 0.9em;
+                    }
+
+                    .subtitle p {
+                        margin: 0px;
+                        line-height: 1.3em;
                     }
 
                     .title-image {
@@ -110,7 +133,7 @@ const Professional = ({ projects }) => {
                     }
 
                     #project-list a {
-                        color: ${font.link};
+                        color: ${theme.link.primary};
                         text-decoration: none;
                         padding: 0 5px;
                     }
@@ -120,7 +143,7 @@ const Professional = ({ projects }) => {
                     }
 
                     #project-list a.active, #project-list a:hover {
-                        color: ${font.active};
+                        color: ${theme.link.active};
                     }
 
                     @media screen and (max-width: 1440px) {
@@ -139,7 +162,7 @@ const Professional = ({ projects }) => {
                             margin: 0;
                         }
                         .main-container {
-                            width: 80%;
+                            width: 100%;
                             margin: auto;
                         }
                         .title-row .image-container {
@@ -189,7 +212,7 @@ const Professional = ({ projects }) => {
 
     return (
         <Layout>
-            <ProjectList />
+            {/* <ProjectList /> */}
             {projects && projects.results && projects.results.length ? projects.results.map((project, index) => (
                 <ProjectGallery project={project} key={index} />
             )) : null}
