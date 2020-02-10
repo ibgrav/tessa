@@ -141,7 +141,7 @@ const Home = ({ doc }) => {
                 <img id="logo" src={doc.data.header.url} alt={doc.data.header.alt ? doc.data.header.alt : "tessa crespo"} />
                 <div id="blurb">
                     <div id="title">{doc.data.title ? RichText.render(doc.data.title, linkResolver) : 'tessa crespo'}</div>
-                    <div id="subtext">{doc.data.subtitle ? RichText.render(doc.data.subtitle, linkResolver) : ''}</div>
+                    <div id="subtext">{doc.data.subtitle ? RichText.render(doc.data.subtitle, linkResolver) : ''}</div>{console.log(doc.data.button_link)}
                     <Link href={linkResolver(doc.data.button_link)}><a id="launch">{doc.data.button_text ? doc.data.button_text : 'story time'}</a></Link>
                 </div>
                 <Social />
