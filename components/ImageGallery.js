@@ -37,7 +37,7 @@ const ImageGallery = ({ children, images, numberOfColumns, clickable, isVertical
 
     const HorizontalColumn = ({ arr, isFirst }) => (
         <div className="row">
-            {isFirst && children && <div className="row-child">{children}</div>}
+            {isFirst && children && <div className="row-child children">{children}</div>}
             {arr.map(({ image, wide }, index) => (
                 clickable ? <a className={`row-child ${wide ? wide : ''}`} key={index} href={image.url}><img className="clickable" src={image.url} alt={image.alt ? image.alt : ''} /></a>
                     : <img className={`row-child ${wide ? 'wide' : ''}`} key={index} src={image.url} alt={image.alt ? image.alt : ''} />
@@ -81,6 +81,12 @@ const ImageGallery = ({ children, images, numberOfColumns, clickable, isVertical
                     cursor: pointer;
                 }
 
+                @media screen and (max-width: 1000px) {
+                    .row .children {
+                        width: 100%;
+                    }
+                }
+
                 @media screen and (max-width: 800px) {
                     .column {
                         flex: 100%;
@@ -89,6 +95,9 @@ const ImageGallery = ({ children, images, numberOfColumns, clickable, isVertical
                     }
                     .photos img {
                         margin: 10px 0;
+                    }
+                    .row .row-child {
+                        width: 100%;
                     }
                 }
             `}</style>
