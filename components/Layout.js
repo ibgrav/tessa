@@ -7,7 +7,7 @@ import { Client } from '../lib/prismic-configuration';
 import useApp from '../lib/useApp';
 
 import Social from './Social';
-import { getCookieValue, setCookie } from '../lib/global';
+import { getCookieValue, setCookie, debounce } from '../lib/global';
 
 let initialHeaderHeight = null;
 
@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
             if (scroll > initialHeaderHeight && !hasSticky) {
                 layout.classList.add('sticky');
                 menu.classList.remove('open');
-            } else if (scroll < (initialHeaderHeight - 50) && hasSticky) {
+            } else if (scroll < (initialHeaderHeight + 50) && hasSticky) {
                 layout.classList.remove('sticky');
                 menu.classList.remove('open');
             }
@@ -50,7 +50,7 @@ const Layout = ({ children }) => {
 
         const setScrollListener = () => {
             console.log('adding scroll event listener for sticky header');
-            window.addEventListener('scroll', triggerStickyHeader);
+            window.addEventListener('scroll', debounce(triggerStickyHeader, 100));
             triggerStickyHeader();
             setEvents();
         }
@@ -221,21 +221,20 @@ const Layout = ({ children }) => {
                 }
 
                 #layout.sticky #mobile-tabs .links {
+                    width: calc(100% - 110px);
+                    right: 45px;
+                    top: -50px;
+                    justify-content: flex-end;
                     flex-flow: row;
-                    width: 100%;
-                    background: ${theme.background[currentPrimary]};
-                    left: 0;
                     flex-wrap: wrap;
                     padding: 5px;
                     box-sizing: border-box;
-                    justify-content: space-around;
-                    transition: top 500ms, ${metaAnimate};
-                    box-shadow: 0px 5px 10px -10px rgba(0,0,0,0.3);
+                    transition: top 500ms, opacity 500ms, ${metaAnimate};
                 }
 
                 #layout.sticky #mobile-tabs.open .links {
-                    top: 40px;
-                    transition: top 1s, ${metaAnimate};
+                    top: -5px;
+                    transition: top 1s, opacity 500ms, ${metaAnimate};
                 }
 
                 #layout.sticky #mobile-tabs .open-btn {
@@ -244,7 +243,7 @@ const Layout = ({ children }) => {
                 }
 
                 #layout.sticky #mobile-tabs .links a {
-                    margin: 0px;
+                    margin: 0 10px;
                 }
 
                 #mobile-tabs .links a {
@@ -252,7 +251,7 @@ const Layout = ({ children }) => {
                 }
 
                 #mobile-tabs.open .links {
-                    top: 10px;
+                    top: 0px;
                     opacity: 1;
                     transition: top 1s, opacity 1s 500ms, ${metaAnimate};
                 }
@@ -303,7 +302,7 @@ const Layout = ({ children }) => {
                     height: 50px;
                     margin: 0 auto;
                     transform: translateY(-50px);
-                    animation: slide-down 500ms 1s forwards;
+                    animation: slide-down 1s forwards;
                     box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.3);
                 }
 
@@ -311,9 +310,22 @@ const Layout = ({ children }) => {
                     line-height: 50px;
                 }
 
+                .waiting-to-animate {
+                    opacity: 0 !important;
+                }
+
+                .animate-in {
+                    animation: animate-in 2s forwards !important;
+                }
+
                 @keyframes fade-in {
                     from {opacity: 0}
                     to {opacity: 1}
+                }
+
+                @keyframes animate-in {
+                    from {opacity: 0; transform: translateY(100px)}
+                    to {opacity: 1; transform: translateY(0)}
                 }
 
                 @keyframes slide-down {
@@ -325,7 +337,7 @@ const Layout = ({ children }) => {
                     #container, #header-container {
                         width: 100%;
                     }
-                    #layout.sticky #header-container {
+                    #header-container {
                         padding: 0;
                     }
                 }
@@ -361,6 +373,15 @@ const Layout = ({ children }) => {
 
                     #project-list {
                         margin-bottom: 10px !important;
+                    }
+                }
+
+                @media screen and (max-width: 355px) {
+                    #layout.sticky #mobile-tabs .links {
+                        width: calc(100% - 50px)
+                    }
+                    #layout.sticky #logo {
+                        display: none;
                     }
                 }
             `}</style>

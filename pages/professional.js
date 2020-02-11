@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import Layout from '../components/Layout';
 import Prismic from 'prismic-javascript';
 import { RichText } from 'prismic-reactjs';
@@ -5,30 +7,23 @@ import { Client, linkResolver } from '../lib/prismic-configuration';
 
 import useApp from '../lib/useApp';
 import ImageGallery from '../components/ImageGallery';
+import { fadeInOnScrollListener } from '../lib/global';
 
 const Professional = ({ projects }) => {
-    const { isDark, theme, currentPrimary } = useApp();
+    const { theme, currentPrimary } = useApp();
 
-    const HorizontalGallery = ({ images }) => (
-        images.length && images.map(({ image, wide }, i) => (
-            i !== 0 ?
-                <div key={i} className={`image-container ${wide ? 'wide' : ''}`}>
-                    <img className="gallery-photo" src={image.url} alt={image.alt} />
-                </div>
-                : null
-        ))
-    );
+    const addAnimateInListener = useCallback((el) => {
+        fadeInOnScrollListener(el);
+    });
 
     const ProjectGallery = ({ project }) => {
         const { title_image, description, images, credit, is_vertical, subtitle, subtitle_color } = project.data;
-
-        console.log({ title_image, description, images, credit, is_vertical, subtitle, subtitle_color })
 
         const TitleItem = () => (
             <div className="main-container">
                 <div className="title-box">
                     <img className="title-image" src={title_image.url} alt={title_image.alt} />
-                    <div className="subtitle" style={{color: subtitle_color ? subtitle_color : 'inherit'}}>{subtitle ? RichText.render(subtitle, linkResolver) : ''}</div>
+                    <div className="subtitle" style={{ color: subtitle_color ? subtitle_color : 'inherit' }}>{subtitle ? RichText.render(subtitle, linkResolver) : ''}</div>
                 </div>
                 <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
                 {credit && <div className="credit">{RichText.render(credit, linkResolver)}</div>}
@@ -36,7 +31,7 @@ const Professional = ({ projects }) => {
         )
 
         return (
-            <div className="project-gallery" id={project.uid}>
+            <div className="project-gallery waiting-to-animate" id={project.uid} ref={addAnimateInListener}>
                 <style global jsx>{`
                     .project-gallery {
                         display: flex;

@@ -22,7 +22,7 @@ const Academic = ({ items }) => {
 
                 .card {
                     width: calc(50% - 10px);
-                    height: 45vh;
+                    height: 35vh;
                     background-position: center;
                     background-size: cover;
                     margin-bottom: 20px;
@@ -48,7 +48,7 @@ const Academic = ({ items }) => {
                     background-color: ${theme.link.active};
                     color: ${theme.background[currentPrimary]};
                     text-align: center;
-                    line-height: 45vh;
+                    line-height: 35vh;
                     font-size: 0.8em;
                 }
 
