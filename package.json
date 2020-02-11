@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ibgrav/tessa#readme",
   "dependencies": {
+    "firebase-admin": "^8.9.2",
     "next": "^9.2.1",
     "prismic-javascript": "^2.1.5",
     "prismic-reactjs": "^1.2.0",

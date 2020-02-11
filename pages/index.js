@@ -3,10 +3,10 @@ import Link from 'next/link';
 
 import { RichText } from 'prismic-reactjs';
 import { Client, linkResolver } from '../lib/prismic-configuration';
-
+import { storageFetch } from '../lib/global';
 import Social from '../components/Social';
 
-const Home = ({ doc }) => {
+const Home = ({ doc, video }) => {
     const videoMounted = useCallback((vid) => {
         if (vid) {
             const src = vid.dataset.src;
@@ -16,7 +16,7 @@ const Home = ({ doc }) => {
         }
     });
 
-    console.log({ doc, linkResolver: linkResolver(doc) })
+    console.log({ doc, video, linkResolver: linkResolver(doc) })
 
     return (
         <div id="home">
@@ -124,7 +124,7 @@ const Home = ({ doc }) => {
                     }
                 }
             `}</style>
-            <video id="bg-vid" ref={videoMounted} data-src={doc.data.video.url} type="video/mp4" poster={doc.data.video_poster.url} playsInline autoPlay loop muted />
+            <video id="bg-vid" ref={videoMounted} data-src={video.url} type="video/mp4" poster={doc.data.video_poster.url} playsInline autoPlay loop muted />
             {/* <div id="video-ratio">
                 <iframe
                     id="bg-vid"
@@ -153,8 +153,11 @@ const Home = ({ doc }) => {
 Home.getInitialProps = async ctx => {
     const req = ctx.req;
     const home = await Client(req).getSingle('home');
+    const video = await storageFetch({ req, prefix: 'home-video', type: 'video/mp4', sort: 'updated' });
+    console.log({ video })
     return {
-        doc: home
+        doc: home,
+        video: video[0]
     }
 }
 

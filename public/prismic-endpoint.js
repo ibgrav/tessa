@@ -1,1 +1,0 @@
-window.prismic = { endpoint: 'https://tessa.cdn.prismic.io/api/v2' };
