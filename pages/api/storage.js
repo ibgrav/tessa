@@ -1,39 +1,41 @@
-import * as admin from 'firebase-admin';
-import * as serviceAccount from '../../lib/serviceAccountKey.json';
+import fbAdmin from '../../lib/fbAdmin';
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  apiKey: "AIzaSyCPUFkzdNSJtekNuLS-rTO3PS9eKooAuyQ",
-  authDomain: "tessa-e95ff.firebaseapp.com",
-  databaseURL: "https://tessa-e95ff.firebaseio.com",
-  projectId: "tessa-e95ff",
-  storageBucket: "  v",
-  messagingSenderId: "387014740994",
-  appId: "1:387014740994:web:dd9ff74f403d18a018ab1b",
-  measurementId: "G-55H8ZK41DW"
-});
+const bucket = fbAdmin.storage().bucket();
 
-const bucket = admin.storage().bucket();
+async function listFiles({ prefix, delimiter, type, sort, desc }) {
+  const options = {};
+  if (prefix) options.prefix = prefix.indexOf('/') < 0 ? `${prefix}/` : prefix;
+  if (delimiter) options.delimiter = delimiter;
 
-async function listFiles() {
-  const [files] = await bucket.getFiles();
-
-  console.log('Files:');
-  files.forEach(file => {
-    console.log(file.name);
-  });
+  const [files] = await bucket.getFiles(options);
+  const filteredFiles = type ? files.filter(file => file.metadata.contentType === type) : files;
+  const filteredFields = filteredFiles.map(file => ({
+    url: `https://firebasestorage.googleapis.com/v0/b/tessa-e95ff.appspot.com/o/${encodeURIComponent(file.name)}?alt=media&token=${file.metadata.metadata.firebaseStorageDownloadTokens}`,
+    type: file.metadata.contentType,
+    updated: file.metadata.updated,
+    name: file.name
+  }));
+  const sortedFiles = sort ? filteredFields.sort((a, b) => {
+    if (desc) return ('' + a[sort]).localeCompare(b[sort]);
+    return ('' + b[sort]).localeCompare(a[sort]);
+  }) : filteredFields;
+  return sortedFiles;
 }
 
 export default async (req, res) => {
-  const path = req.query.path;
-  if (path) {
+  const prefix = req.query.prefix;
+  const type = req.query.type;
+  const sort = req.query.sort;
+  const desc = req.query.desc;
+  const delimiter = req.query.delimiter || '/';
+  if (prefix) {
     try {
-      const allFiles = await listFiles();
+      const allFiles = await listFiles({ prefix, delimiter, type, sort, desc });
       res.status(200).json(allFiles);
     } catch {
-      res.status(400).send('Something went wrong with the previewSession request');
+      res.status(400).send('Something went wrong');
     }
   } else {
-    res.status(400).send('Missing path');
+    res.status(400).send('Missing ?prefix=');
   }
 }
