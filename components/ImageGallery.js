@@ -10,8 +10,6 @@ const ImageGallery = ({ children, images, numberOfColumns, clickable, isVertical
         }
     } else imageArrays.push(images);
 
-    console.log({ imageArrays });
-
     const VerticalColumn = ({ arr, isFirst }) => (
         <div className="column">
             {isFirst && children && children}
