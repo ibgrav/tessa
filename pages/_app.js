@@ -10,7 +10,11 @@ function MyApp({ Component, pageProps }) {
                 <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
                 <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
 
-                <script type="text/javascript" src="/prismic-endpoint.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-analytics.js"></script>
+
+                <script type="text/javascript" src="/page-setup.js"></script>
+                
                 <script type="text/javascript" src="https://static.cdn.prismic.io/prismic.min.js?new=true"></script>
                 <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700&display=swap" rel="stylesheet" />
 
