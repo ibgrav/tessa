@@ -50,7 +50,7 @@ const Layout = ({ children }) => {
 
         const setScrollListener = () => {
             console.log('adding scroll event listener for sticky header');
-            window.addEventListener('scroll', debounce(triggerStickyHeader, 100));
+            window.addEventListener('scroll', debounce(triggerStickyHeader, 10));
             triggerStickyHeader();
             setEvents();
         }
