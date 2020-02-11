@@ -1,9 +1,10 @@
 import Layout from '../components/Layout';
 import { RichText } from 'prismic-reactjs';
 import { Client, linkResolver } from '../lib/prismic-configuration';
+import { storageFetch } from '../lib/global';
 
-const About = ({ doc }) => {
-    console.log({ doc });
+const About = ({ doc, pic }) => {
+    console.log({ doc, pic });
 
     return (
         <Layout>
@@ -34,7 +35,7 @@ const About = ({ doc }) => {
                 }
             `}</style>
             <div id="about">
-                <img id="portrait" src={doc.data.image.url} alt={doc.data.image.alt} />
+                <img id="portrait" src={pic.url} alt="Tessa Portrait" />
                 <div id="blurb">{doc.data.content ? RichText.render(doc.data.content, linkResolver) : ''}</div>
             </div>
         </Layout>
@@ -44,7 +45,8 @@ const About = ({ doc }) => {
 About.getInitialProps = async ctx => {
     const req = ctx.req;
     const doc = await Client(req).getSingle('about');
-    return { doc }
+    const pic = await storageFetch({ req, prefix: 'about', type: 'image/jpeg', sort: 'updated' });
+    return { doc, pic: pic[0] }
 }
 
 export default About;
