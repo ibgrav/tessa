@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Client } from '../lib/prismic-configuration';
-
+import { storageFetch } from '../lib/global';
 import Layout from '../components/Layout';
 import ImageGallery from '../components/ImageGallery';
 
-const Personal = ({ doc }) => {
+const Personal = ({ doc, pics }) => {
     const [state, setState] = useState({
         photosMounted: false
     });
+
+    console.log({ pics })
 
     useEffect(() => {
         if (!state.photosMounted) setState(state => ({ ...state, photosMounted: true }));
@@ -15,7 +17,7 @@ const Personal = ({ doc }) => {
 
     return (
         <Layout>
-            <ImageGallery clickable images={doc.data.images} numberOfColumns={3} isVertical />
+            <ImageGallery clickable images={pics} numberOfColumns={3} isVertical />
         </Layout>
     );
 }
@@ -24,7 +26,8 @@ const Personal = ({ doc }) => {
 Personal.getInitialProps = async ctx => {
     const req = ctx.req;
     const doc = await Client(req).getSingle('personal');
-    return { doc }
+    const pics = await storageFetch({ req, prefix: 'personal', type: 'image/jpeg', sort: 'updated' });
+    return { pics }
 }
 
 export default Personal;

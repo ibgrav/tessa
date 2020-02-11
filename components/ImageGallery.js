@@ -10,23 +10,30 @@ const ImageGallery = ({ children, images, numberOfColumns, clickable, isVertical
         }
     } else imageArrays.push(images);
 
+    console.log({ imageArrays });
+
     const VerticalColumn = ({ arr, isFirst }) => (
         <div className="column">
             {isFirst && children && children}
-            {arr.map(({ image }, index) => (
-                clickable ? <a key={index} href={image.url}><img className="clickable" src={image.url} alt={image.alt ? image.alt : ''} /></a>
-                    : <img key={index} src={image.url} alt={image.alt ? image.alt : ''} />
-            ))}
+            {arr.map((image, index) => {
+                if (image.image) image = { ...image.image, wide: image.wide };
+                return clickable ? <a key={index} href={image.url}><img className="clickable" src={image.url} alt={image.alt ? image.alt : 'image'} /></a>
+                    : <img key={index} src={image.url} alt={image.alt ? image.alt : 'image'} />
+            })}
         </div>
     )
 
     const HorizontalColumn = ({ arr, isFirst }) => (
         <div className="row">
             {isFirst && children && <div className="row-child children">{children}</div>}
-            {arr.map(({ image, wide }, index) => (
-                clickable ? <a className={`row-child ${wide ? wide : ''}`} key={index} href={image.url}><img className="clickable" src={image.url} alt={image.alt ? image.alt : ''} /></a>
-                    : <img className={`row-child ${wide ? 'wide' : ''}`} key={index} src={image.url} alt={image.alt ? image.alt : ''} />
-            ))}
+            {arr.map((image, index) => {
+                if (image.image) image = { ...image.image, wide: image.wide };
+                if (image && image.url) {
+                    const wide = image.wide;
+                    return clickable ? <a className={`row-child ${wide ? wide : ''}`} key={index} href={image.url}><img className="clickable" src={image.url} alt={image.alt ? image.alt : image.name} /></a>
+                        : <img className={`row-child ${wide ? 'wide' : ''}`} key={index} src={image.url} alt={image.alt ? image.alt : image.name} />
+                } else return null;
+            })}
         </div>
     )
 
