@@ -315,7 +315,7 @@ const Layout = ({ children }) => {
                 }
 
                 .animate-in {
-                    animation: animate-in 2s forwards !important;
+                    animation: animate-in 1s forwards !important;
                 }
 
                 @keyframes fade-in {
@@ -324,7 +324,7 @@ const Layout = ({ children }) => {
                 }
 
                 @keyframes animate-in {
-                    from {opacity: 0; transform: translateY(100px)}
+                    from {opacity: 0; transform: translateY(50px)}
                     to {opacity: 1; transform: translateY(0)}
                 }
 
