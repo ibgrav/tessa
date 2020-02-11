@@ -152,9 +152,8 @@ const Home = ({ doc, video }) => {
 
 Home.getInitialProps = async ctx => {
     const req = ctx.req;
-    const base = req.headers.referer;
     const home = await Client(req).getSingle('home');
-    const video = await storageFetch({ base, prefix: 'home-video', type: 'video/mp4', sort: 'updated' });
+    const video = await storageFetch({ req, prefix: 'home-video', type: 'video/mp4', sort: 'updated' });
     console.log({ video })
     return {
         doc: home,
