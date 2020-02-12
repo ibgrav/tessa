@@ -211,7 +211,7 @@ body {
 }
 
 @media screen and (max-width: 700px) {
-  #about .about {
+  #about {
     width: 100%;
   }
 
@@ -229,7 +229,6 @@ body {
   margin: 0 auto;
   box-sizing: border-box;
   overflow-x: hidden;
-  padding: 0px 20px;
 }
 
 #layout .container {
@@ -256,6 +255,7 @@ body {
   justify-content: space-between;
   height: 100%;
   overflow: hidden;
+  padding: 0px 40px;
 }
 
 #layout .logo {
@@ -298,8 +298,7 @@ body {
 #layout .mobile-tabs .links {
   position: absolute;
   right: 33px;
-  top: -200px;
-  transition: top 500ms;
+  top: -125px;
   opacity: 0;
   display: flex;
   flex-flow: column;
@@ -317,12 +316,10 @@ body {
   flex-wrap: wrap;
   padding: 5px;
   box-sizing: border-box;
-  transition: top 500ms, opacity 500ms;
 }
 
 #layout.sticky .mobile-tabs.open .links {
   top: -5px;
-  transition: top 1s, opacity 500ms;
 }
 
 #layout.sticky .mobile-tabs .open-btn {
@@ -339,9 +336,8 @@ body {
 }
 
 #layout .mobile-tabs.open .links {
-  top: 0px;
+  top: 10px;
   opacity: 1;
-  transition: top 1s, opacity 500ms 500ms;
 }
 
 #layout .mobile-tabs .open-btn {
@@ -501,9 +497,9 @@ body {
 
 @media screen and (max-width: 800px) {
   .image-gallery .column {
-      flex: 100%;
-      max-width: 100%;
-      padding: 0;
+      flex: 100% !important;
+      max-width: 100% !important;
+      padding: 0 !important;
   }
   .image-gallery img {
       margin: 10px 0;
