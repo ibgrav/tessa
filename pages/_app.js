@@ -1,10 +1,18 @@
 import Head from 'next/head';
-import { useEffect } from 'react';
-
-import { setListeners } from '../lib/global';
+import { useEffect, useState } from 'react';
+import { setListeners, absoluteUrl } from '../lib/global';
 
 function MyApp({ Component, pageProps }) {
+  const [isStage, setIsStage] = useState(false);
+
   useEffect(() => {
+    const prefix = location.host.split('.')[0];
+    console.log({ prefix })
+    if (prefix === 'localhost:3000' || prefix === 'stage-tessa') {
+      setIsStage(true);
+      console.log('IS STAGING ENV');
+    }
+
     setListeners();
   }, []);
 
@@ -20,7 +28,7 @@ function MyApp({ Component, pageProps }) {
         <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700&display=swap" rel="stylesheet" />
 
         <script type="text/javascript" src="/page-setup.js"></script>
-        <script type="text/javascript" src="https://static.cdn.prismic.io/prismic.min.js?new=true"></script>
+        {isStage && <script type="text/javascript" src="https://static.cdn.prismic.io/prismic.min.js?new=true"></script>}
       </Head>
       <Component {...pageProps} />
     </>
@@ -28,9 +36,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 // MyApp.getInitialProps = async ctx => {
-//   const metadata = await Client(ctx.req).getSingle('metadata');
-//   console.log({ metadata })
-//   return { metadata }
+//   return { req: ctx.req }
 // }
 
 export default MyApp
