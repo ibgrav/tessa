@@ -12,27 +12,11 @@ const Help = () => {
         <li>Dev Site: <a href="https://dev-tessa.now.sh" target="_blank">dev-tessa.now.sh</a></li>
       </ul>
 
-      <h2>How media storage works:</h2>
-      <b>Home</b>
+      <h2>Additional Info:</h2>
       <ul>
-        <li>The newest-uploaded file to <a href="https://console.firebase.google.com/u/0/project/tessa-e95ff/storage/tessa-e95ff.appspot.com/files~2Fhome-video" target="_blank">/home-video</a> will be used as the background auto-play video for the homepage</li>
-      </ul>
-      <b>About</b>
-      <ul>
-        <li>The about photo will use the about.jpg used in the <a href="https://console.firebase.google.com/u/0/project/tessa-e95ff/storage/tessa-e95ff.appspot.com/files~2Fabout" target="_blank">/about</a> folder</li>
-      </ul>
-      <b>Personal</b>
-      <ul>
-        <li>All photos inside <a href="https://console.firebase.google.com/u/0/project/tessa-e95ff/storage/tessa-e95ff.appspot.com/files~2Fpersonal" target="_blank">/personal</a> will be used, ordered by newest first.</li>
-        <li>The photo gallery is three vertical columns, starting on the left. The newest photo is on the top left, descending down.</li>
-      </ul>
-      <b>Professional</b>
-      <ul>
-        <li></li>
-      </ul>
-      <b>Academic</b>
-      <ul>
-        <li></li>
+        <li>There is a monthly bandwidth limit of 100GB for Prismic (aka, every time someone views the site and sees an image, it counts towards the bandwidth).</li>
+        <li>Prismic should automatically compress images for the most efficiant space-saving quality, but be aware of the limit (I'm sure it'll be fine, unless like 5,000 people visit the site all of a sudden</li>
+        <li>You can check the current bandwidth usage <a href="https://tessa.prismic.io/settings/bandwidth/" target="_blank">here</a>.</li>
       </ul>
     </div>
   )

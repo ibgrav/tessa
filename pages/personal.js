@@ -1,33 +1,22 @@
-import { useState, useEffect } from 'react';
-import { Client } from '../lib/prismic-configuration';
-import { storageFetch } from '../lib/global';
-import Layout from '../components/Layout';
-import ImageGallery from '../components/ImageGallery';
+import { Client } from '../lib/prismic';
+import Layout from '../lib/Layout';
+import ImageGallery from '../lib/ImageGallery';
 
-const Personal = ({ doc, pics }) => {
-    const [state, setState] = useState({
-        photosMounted: false
-    });
-
-    console.log({ pics })
-
-    useEffect(() => {
-        if (!state.photosMounted) setState(state => ({ ...state, photosMounted: true }));
-    }, []);
+const Personal = ({ personal, meta }) => {
+    const { images } = personal && personal.data;
+    console.log({ images, personal })
 
     return (
-        <Layout>
-            <ImageGallery clickable images={pics} numberOfColumns={3} isVertical />
+        <Layout meta={meta}>
+            <ImageGallery clickable images={images} numberOfColumns={3} isVertical />
         </Layout>
     );
 }
 
-
 Personal.getInitialProps = async ctx => {
-    const req = ctx.req;
-    const doc = await Client(req).getSingle('personal');
-    const pics = await storageFetch({ req, prefix: 'personal', type: 'image/jpeg', sort: 'updated' });
-    return { pics }
+    const personal = await Client(ctx.req).getSingle('personal');
+    const meta = await Client(ctx.req).getSingle('metadata');
+    return { personal, meta }
 }
 
 export default Personal;

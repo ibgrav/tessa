@@ -1,15 +1,10 @@
-import { useRouter } from 'next/router';
-import Layout from '../../components/Layout';
-import { Client } from '../../lib/prismic-configuration';
+import Layout from '../../lib/Layout';
+import { Client } from '../../lib/prismic';
 import Prismic from 'prismic-javascript';
+import ImageGallery from '../../lib/ImageGallery';
 
-import ImageGallery from '../../components/ImageGallery';
-
-const AcademicItem = ({ doc }) => {
-    const router = useRouter();
-    const slug = router.query.slug;
-
-    console.log({ doc });
+const AcademicItem = ({ doc, meta }) => {
+    console.log({ academicItem: doc });
 
     const VimeoPlayer = ({ id }) => (
         <iframe
@@ -21,14 +16,7 @@ const AcademicItem = ({ doc }) => {
     )
 
     return (
-        <Layout>
-            <style global jsx>{`
-                .vimeo-embed {
-                    width: 100%;
-                    height: calc(100vh - 245px);
-                    margin-bottom: 40px;
-                }
-            `}</style>
+        <Layout meta={meta}>
             {doc ?
                 <div className="academic-item">
                     {doc.data.vimeo_id && <VimeoPlayer id={doc.data.vimeo_id} />}
@@ -41,12 +29,12 @@ const AcademicItem = ({ doc }) => {
 }
 
 AcademicItem.getInitialProps = async ctx => {
-    const req = ctx.req;
     const slug = ctx.query.slug;
-    const doc = await Client(req).query(
+    const meta = await Client(ctx.req).getSingle('metadata');
+    const doc = await Client(ctx.req).query(
         Prismic.Predicates.at('my.academic.uid', slug)
     );
-    return { doc: doc && doc.results[0] }
+    return { doc: doc && doc.results[0], meta }
 }
 
 export default AcademicItem;
