@@ -1,67 +1,36 @@
 import Head from 'next/head';
-import { AppProvider } from '../lib/AppContext';
+import { useEffect } from 'react';
+
+import { setListeners } from '../lib/global';
 
 function MyApp({ Component, pageProps }) {
-    return (
-        <>
-            <Head>
-                <title>tessa crespo</title>
-                <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-                <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
-                <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
+  useEffect(() => {
+    setListeners();
+  }, []);
 
-                <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js"></script>
-                <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-analytics.js"></script>
+  return (
+    <>
+      <Head>
+        <title>tessa crespo</title>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+        <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
 
-                <script type="text/javascript" src="/page-setup.js"></script>
-                
-                <script type="text/javascript" src="https://static.cdn.prismic.io/prismic.min.js?new=true"></script>
-                <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700&display=swap" rel="stylesheet" />
+        <link href="/global.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700&display=swap" rel="stylesheet" />
 
-                <style>{`
-                    * {
-                        -webkit-font-smoothing: antialiased;
-                        -moz-osx-font-smoothing: grayscale;
-                        font-family: 'Josefin Sans', sans-serif;
-                    }
-
-                    body {
-                        margin: 0 auto;
-                        color: #333;
-                        background-color: #fff;
-                        font-size: 16px;
-                    }
-
-                    @media screen and (max-width: 600px) {
-                        body {
-                            font-size: 16px;
-                        }
-                    }
-
-                    @media screen and (max-width: 420px) {
-                        body {
-                            font-size: 16px;
-                        }
-                    }
-                `}</style>
-            </Head>
-            <AppProvider>
-                <Component {...pageProps} />
-            </AppProvider>
-        </>
-    )
+        <script type="text/javascript" src="/page-setup.js"></script>
+        <script type="text/javascript" src="https://static.cdn.prismic.io/prismic.min.js?new=true"></script>
+      </Head>
+      <Component {...pageProps} />
+    </>
+  )
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
 // MyApp.getInitialProps = async ctx => {
-//     const req = ctx.req;
-//     const metadata = await Client(req).getSingle('metadata');
-//     console.log({ metadata, ctx })
-//     return { metadata: metadata }
+//   const metadata = await Client(ctx.req).getSingle('metadata');
+//   console.log({ metadata })
+//   return { metadata }
 // }
 
 export default MyApp

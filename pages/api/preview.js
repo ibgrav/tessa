@@ -1,5 +1,5 @@
 	
-import { Client, linkResolver } from '../../lib/prismic-configuration';
+import { Client, linkResolver } from '../../lib/prismic';
  
 export default async (req, res) => {
   const token = req.query.token;
