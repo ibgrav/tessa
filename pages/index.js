@@ -18,7 +18,7 @@ const Home = ({ home }) => {
         <div className="blurb">
           <div className="title">{home.data.title ? RichText.render(home.data.title, linkResolver) : 'tessa crespo'}</div>
           <div className="subtext">{home.data.subtitle ? RichText.render(home.data.subtitle, linkResolver) : ''}</div>{console.log(home.data.button_link)}
-          <Link href={linkResolver(home.data.button_link)}><a className="launch">{home.data.button_text ? home.data.button_text : 'story time'}</a></Link>
+          <Link href={home.data.button_link}><a className="launch">{home.data.button_text ? home.data.button_text : 'story time'}</a></Link>
         </div>
         <Social />
       </div>
