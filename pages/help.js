@@ -4,6 +4,7 @@ const Help = () => {
       <h2>Helpful Links:</h2>
       <ul>
         <li>Content: <a href="https://tessa.prismic.io/" target="_blank">Prismic</a></li>
+        <li>Staging Site: <a href="https://stage-tessa.now.sh/" target="_blank">stage-tessa.now.sh</a></li>
         <li>Media: <a href="https://console.firebase.google.com/u/0/project/tessa-e95ff/storage/tessa-e95ff.appspot.com/files~2F" target="_blank">Firebase Storage</a></li>
         <li><a href="https://console.cloud.google.com/storage/browser/tessa-e95ff.appspot.com" target="_blank">Google Storage Bucket (Admin Only)</a></li>
         <li>Analytics: <a href="https://console.firebase.google.com/u/0/project/tessa-e95ff/analytics/app/web:ODFlZTk4N2EtYzRlMi00OGQ1LWFiNDgtOTMzOWQyZDE0ODJm/overview~2F%3Ft=1581436302788&fpn=387014740994&swu=1&sgu=1&sus=upgraded&cs=app.m.dashboard.overview&g=1" target="_blank">Google Analytics</a></li>

@@ -1,21 +1,14 @@
 import Layout from '../../lib/Layout';
 import { Client } from '../../lib/prismic';
 import Prismic from 'prismic-javascript';
-import { RichText } from 'prismic-reactjs';
-import Link from 'next/link';
+import Cards from '../../lib/Cards';
 
 const Academic = ({ items, meta }) => {
     console.log({ academicItems: items })
 
     return (
         <Layout meta={meta}>
-            <div id="academic">
-                {items.length && items.map((item, index) => (
-                    <div key={index} className="card" style={{ backgroundImage: `url(${item.data.card_image && item.data.card_image.url})` }}>
-                        <Link href={`/academic/${item.uid}`}><a className="cover"><span className="card-title">{RichText.render(item.data.title)}</span></a></Link>
-                    </div>
-                ))}
-            </div>
+            <Cards items={items} />
         </Layout>
     );
 }

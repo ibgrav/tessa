@@ -10,12 +10,12 @@ const Project = ({ project, meta }) => {
   console.log({ project })
 
   const ProjectGallery = ({ project }) => {
-    const { title_image, description, images, credit, is_vertical, subtitle, subtitle_color } = project.data;
+    const { card_image, description, images, credit, is_vertical, subtitle, subtitle_color } = project.data;
 
     const TitleItem = () => (
       <div className="main-container">
         <div className="title-box">
-          <img className="title-image" src={title_image.url} alt={title_image.alt} />
+          <img className="title-image" src={card_image.url} alt={card_image.alt} />
           <div className="subtitle" style={{ color: subtitle_color ? subtitle_color : 'inherit' }}>{subtitle ? RichText.render(subtitle, linkResolver) : ''}</div>
         </div>
         <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
@@ -26,7 +26,7 @@ const Project = ({ project, meta }) => {
     return (
       <div className="project-gallery" id={project.uid}>
         {images && images.length &&
-          <ImageGallery images={images} numberOfColumns={2} isVertical={is_vertical}>{(title_image || description) && <TitleItem />}</ImageGallery>
+          <ImageGallery images={images} numberOfColumns={2} isVertical={is_vertical}>{(card_image || description) && <TitleItem />}</ImageGallery>
         }
       </div>
     )

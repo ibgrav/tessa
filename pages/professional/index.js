@@ -1,18 +1,14 @@
 import Layout from '../../lib/Layout';
 import { Client } from '../../lib/prismic';
 import Prismic from 'prismic-javascript';
-import Link from 'next/link';
+import Cards from '../../lib/Cards';
 
 const Professional = ({ items, meta }) => {
   console.log({ professionalItems: items })
 
   return (
     <Layout meta={meta}>
-      <div id="professional">
-        {items.length && items.map((item, index) => (
-          <Link href={`/professional/${item.uid}`} key={index}><img className="title-img" src={item.data.title_image.url ? item.data.title_image.url : item.data.images[0].image.url} /></Link>
-        ))}
-      </div>
+      <Cards items={items} />
     </Layout>
   );
 }
