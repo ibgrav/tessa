@@ -16,7 +16,7 @@ const Project = ({ project, meta }) => {
       <div className="main-container">
         <div className="title-box">
           <img className="title-image" src={card_image.url} alt={card_image.alt} />
-          <div className="subtitle" style={{ color: subtitle_color ? subtitle_color : 'inherit' }}>{subtitle ? RichText.render(subtitle, linkResolver) : ''}</div>
+          <div className="subtitle" style={{ color: subtitle_color ? subtitle_color : '#333' }}>{subtitle ? RichText.render(subtitle, linkResolver) : ''}</div>
         </div>
         <div className="description">{description ? RichText.render(description, linkResolver) : ''}</div>
         {credit && <div className="credit">{RichText.render(credit, linkResolver)}</div>}
