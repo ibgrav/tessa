@@ -25,8 +25,8 @@ export function House() {
       bounds={bounds}
       defaultPosition={{ x: 0, y: 0 }}
       position={null}
-      grid={[2, 2]}
-      scale={2}
+      grid={[4, 4]}
+      scale={1}
     // onStart={this.handleStart}
     // onDrag={this.handleDrag}
     // onStop={this.handleStop}
