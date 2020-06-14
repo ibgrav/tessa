@@ -1,9 +1,10 @@
 import React from 'react'
-import { House } from '../comps'
+import { House, Menu } from '../comps'
 
 export default function App() {
   return (
     <div>
+      <Menu />
       <House />
     </div>
   )
