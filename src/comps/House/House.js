@@ -11,8 +11,8 @@ export function House() {
     console.log({ rect });
 
     let newBounds = bounds;
-    newBounds.top = rect.top;
-    newBounds.bottom = rect.bottom - window.innerHeight;
+    newBounds.top = rect.bottom - window.innerHeight;
+    newBounds.bottom = rect.top;
     newBounds.left = rect.left;
     newBounds.right = rect.right - window.innerWidth - 1;
 
