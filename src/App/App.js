@@ -1,9 +1,10 @@
 import React from 'react'
+import { House } from '../comps'
 
 export default function App() {
   return (
     <div>
-      <header>header</header>
+      <House />
     </div>
   )
 }
